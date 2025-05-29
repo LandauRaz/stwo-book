@@ -1,0 +1,434 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Static Lookups - stwo-book</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../.././mdbook-admonish.css">
+        <link rel="stylesheet" href="../.././mdbook-admonish-custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">stwo-book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="static-lookups"><a class="header" href="#static-lookups">Static Lookups</a></h1>
+<p>In the previous section, we showed how to create a preprocessed trace. In this section, we will introduce the concept of <em>static lookups</em>, where we will create columns that look up values from a preprocessed trace.</p>
+<pre><code class="language-admonish">Readers who are unfamiliar with the concept of lookups can refer to the [Lookups](../../how-it-works/lookups.md) section for a quick introduction.
+</code></pre>
+<p>Specifically, we will implement a <strong>range-check</strong>. A range-check is a technique used to check that a certain value is within a given range. This proves useful especially in proof systems like Stwo that uses finite fields because it allows checking for underflow and overflow.</p>
+<p>A range-check checks that all values in a column are within a certain range. For example, as in <a href="#fig-range-check">Figure 1</a>, we can check that all values in the lookup columns are between 0 and 3. We do this by creating a multiplicity column that counts the number of times each value in the preprocessed trace appears in the lookup columns.</p>
+<p>Then, we create two LogUp columns. The first column contains in each row a fraction where the nominator is the multiplicity and the denominator is the random linear combination of the value in the range-check column. For example, for row 1, the fraction should be \(\dfrac{2}{X-0}\). Note that in <a href="#fig-range-check">Figure 1</a>, the nominator is actually \(-2\), i.e. we apply a negation to the multiplicity, because we want the sum of the first column to be equal to the sum of the second column.</p>
+<p>The second column contains fractions where the nominator is always 1 and the denominator is the random linear combination of the value in the lookup column. Note that a single row batches two lookup tables by adding two fractions together.</p>
+<figure id="fig-range-check" style="text-align: center;">
+    <img src="./range-check.png" width="100%" />
+    <figcaption><center><span style="font-size: 0.9em">Figure 1: Range-check lookup</span></center></figcaption>
+</figure>
+<p>If you stare at the LogUp columns hard enough, you'll notice that if we add all the fractions in the two columns together, we get 0. This is no coincidence! The prover will provide the sum of the LogUp columns and the verifier check in the open that this value is indeed 0.</p>
+<p>Now let's move on to the implementation.</p>
+<pre><code class="language-rust ignore">struct RangeCheckColumn {
+    pub log_size: u32,
+}
+
+#[allow(dead_code)]
+impl RangeCheckColumn {
+    pub fn new(log_size: u32) -&gt; Self {
+        Self { log_size }
+    }
+
+    pub fn gen_column(&amp;self) -&gt; CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt; {
+        let col = BaseColumn::from_iter((0..(1 &lt;&lt; self.log_size)).map(|i| M31::from(i)));
+        CircleEvaluation::new(CanonicCoset::new(self.log_size).circle_domain(), col)
+    }
+
+    pub fn id(&amp;self) -&gt; PreProcessedColumnId {
+        PreProcessedColumnId {
+            id: format!("range_check_{}_bits", self.log_size),
+        }
+    }
+}</code></pre>
+<p>First, we need to create the range-check column as a preprocessed column. This should look familiar to the code from the previous section.</p>
+<pre><code class="language-rust ignore">fn gen_trace(log_size: u32) -&gt; Vec&lt;CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt;&gt; {
+    // Create a table with random values
+    let mut rng = rand::thread_rng();
+    let mut lookup_col_1 =
+        BaseColumn::from_iter((0..(1 &lt;&lt; log_size)).map(|_| M31::from(rng.gen_range(0..16))));
+    let mut lookup_col_2 =
+        BaseColumn::from_iter((0..(1 &lt;&lt; log_size)).map(|_| M31::from(rng.gen_range(0..16))));
+
+    let mut multiplicity_col = BaseColumn::zeros(1 &lt;&lt; log_size);
+    lookup_col_1
+        .as_mut_slice()
+        .iter()
+        .chain(lookup_col_2.as_mut_slice().iter())
+        .for_each(|value| {
+            let index = value.0 as usize;
+            multiplicity_col.set(index, multiplicity_col.at(index) + M31::from(1));
+        });
+
+    // Convert table to trace polynomials
+    let domain = CanonicCoset::new(log_size).circle_domain();
+    vec![
+        lookup_col_1.clone(),
+        lookup_col_2.clone(),
+        multiplicity_col.clone(),
+    ]
+    .into_iter()
+    .map(|col| CircleEvaluation::new(domain, col))
+    .collect()
+}</code></pre>
+<p>Next, we create the trace columns. The first two columns are random values in the range \([0, 15]\), and the third column contains the counts of the values in the range-check column.</p>
+<pre><code class="language-rust ignore">relation!(LookupElements, 1);
+
+fn gen_logup_trace(
+    log_size: u32,
+    range_check_col: &amp;BaseColumn,
+    lookup_col_1: &amp;BaseColumn,
+    lookup_col_2: &amp;BaseColumn,
+    multiplicity_col: &amp;BaseColumn,
+    lookup_elements: &amp;LookupElements,
+) -&gt; (
+    Vec&lt;CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt;&gt;,
+    SecureField,
+) {
+    let mut logup_gen = LogupTraceGenerator::new(log_size);
+
+    let mut col_gen = logup_gen.new_col();
+    for simd_row in 0..(1 &lt;&lt; (log_size - LOG_N_LANES)) {
+        let numerator: PackedSecureField = PackedSecureField::from(multiplicity_col.data[simd_row]);
+        let denom: PackedSecureField = lookup_elements.combine(&amp;[range_check_col.data[simd_row]]);
+        col_gen.write_frac(simd_row, -numerator, denom);
+    }
+    col_gen.finalize_col();
+
+    let mut col_gen = logup_gen.new_col();
+    for simd_row in 0..(1 &lt;&lt; (log_size - LOG_N_LANES)) {
+        let lookup_col_1_val: PackedSecureField =
+            lookup_elements.combine(&amp;[lookup_col_1.data[simd_row]]);
+        let lookup_col_2_val: PackedSecureField =
+            lookup_elements.combine(&amp;[lookup_col_2.data[simd_row]]);
+        // 1 / denom1 + 1 / denom2 = (denom1 + denom2) / (denom1 * denom2)
+        let numerator = lookup_col_1_val + lookup_col_2_val;
+        let denom = lookup_col_1_val * lookup_col_2_val;
+        col_gen.write_frac(simd_row, numerator, denom);
+    }
+    col_gen.finalize_col();
+
+    logup_gen.finalize_last()
+}
+
+fn main() {
+    ...
+    // Draw random elements to use when creating the random linear combination of lookup values in the LogUp columns
+    let lookup_elements = LookupElements::draw(channel);
+
+    // Create and commit to the LogUp columns
+    let (logup_cols, claimed_sum) = gen_logup_trace(
+        log_size,
+        &amp;range_check_col,
+        &amp;trace[0],
+        &amp;trace[1],
+        &amp;trace[2],
+        &amp;lookup_elements,
+    );
+    ...
+}</code></pre>
+<p>Now we need to create the LogUp columns.</p>
+<p>First, note that we are creating a <code>LookupElements</code> instance using the macro <code>relation!</code>. This macro creates an API for performing random linear combinations. Under the hood, it creates two random values \(z, \alpha\) that can create a random linear combination of an arbitrary number of elements. In our case, we only need to combine one value (value in \([0,15]\)), which is why we pass in <code>1</code> to the macro.</p>
+<p>Inside <code>gen_logup_trace</code>, we create a <code>LogupTraceGenerator</code> instance. This is a helper class that allows us to create LogUp columns. Every time we create a new column, we need to call <code>new_col()</code> on the <code>LogupTraceGenerator</code> instance.</p>
+<p>You may notice that we are iterating over <code>BaseColumn</code> in chunks of 16, or <code>1 &lt;&lt; LOG_N_LANES</code> values. This is because we are using the <code>SimdBackend</code>, which runs 16 lanes simultaneously, so we need to preserve this structure. The <code>Packed</code> in <code>PackedSecureField</code> means that it packs 16 values into a single value.</p>
+<p>You may also notice that we are using a <code>SecureField</code> instead of just the <code>Field</code>. This is because the random value we created in <code>LookupElements</code> will be in the degree-4 extension field \(\mathbb{F}_{p^4}\). Interested readers can refer to the <a href="../../how-it-works/mersenne-prime.html">Mersenne Primes</a> section for more details.</p>
+<p>Once we set the fractions for each <code>simd_row</code>, we need to call <code>finalize_col()</code> to finalize the column. This process modifies the LogUp columns from individual fractions to cumulative sums of the fractions as shown in <a href="#fig-finalize-col">Figure 2</a>.</p>
+<figure id="fig-finalize-col" style="text-align: center;">
+    <img src="./finalize-col.png" width="80%" />
+    <figcaption><center><span style="font-size: 0.9em">Figure 2: Finalizing each LogUp column</span></center></figcaption>
+</figure>
+<p>Finally, we need to call <code>finalize_last()</code> on the <code>LogupTraceGenerator</code> instance to finalize the LogUp columns, which will return the LogUp columns as well as the sum of the fractions in the LogUp columns.</p>
+<pre><code class="language-rust ignore">struct TestEval {
+    range_check_id: PreProcessedColumnId,
+    log_size: u32,
+    lookup_elements: LookupElements,
+}
+
+impl FrameworkEval for TestEval {
+    fn log_size(&amp;self) -&gt; u32 {
+        self.log_size
+    }
+
+    fn max_constraint_log_degree_bound(&amp;self) -&gt; u32 {
+        self.log_size + CONSTRAINT_EVAL_BLOWUP_FACTOR
+    }
+
+    fn evaluate&lt;E: EvalAtRow&gt;(&amp;self, mut eval: E) -&gt; E {
+        let range_check_col = eval.get_preprocessed_column(self.range_check_id.clone());
+
+        let lookup_col_1 = eval.next_trace_mask();
+        let lookup_col_2 = eval.next_trace_mask();
+        let multiplicity_col = eval.next_trace_mask();
+
+        eval.add_to_relation(RelationEntry::new(
+            &amp;self.lookup_elements,
+            -E::EF::from(multiplicity_col),
+            &amp;[range_check_col],
+        ));
+
+        eval.add_to_relation(RelationEntry::new(
+            &amp;self.lookup_elements,
+            E::EF::one(),
+            &amp;[lookup_col_1],
+        ));
+
+        eval.add_to_relation(RelationEntry::new(
+            &amp;self.lookup_elements,
+            E::EF::one(),
+            &amp;[lookup_col_2],
+        ));
+
+        eval.finalize_logup_batched(&amp;vec![0, 1, 1]);
+
+        eval
+    }
+}</code></pre>
+<p>The last piece of the puzzle is to create the constraints. We use the same <code>TestEval</code> struct as in the previous sections, but the <code>evaluate</code> function will look slightly different. Instead of calling <code>add_constraint</code> on the <code>EvalAtRow</code> instance, we will call <code>add_to_relation</code>, which recreates the fractions that we added in the LogUp columns using values in the range-check, lookup, and multiplicity columns.</p>
+<p>Once we add the fractions as constraints, we call the <code>finalize_logup_batched</code> function, which indicates how we want to batch the fractions. In our case, we added 3 fractions but want to create batches where the last two fractions are batched together, so we pass in <code>&amp;vec![0, 1, 1]</code>.</p>
+<pre><code class="language-rust ignore">    // Verify
+    assert_eq!(claimed_sum, SecureField::zero());
+
+    let channel = &amp;mut Blake2sChannel::default();
+    let commitment_scheme = &amp;mut CommitmentSchemeVerifier::&lt;Blake2sMerkleChannel&gt;::new(config);
+    let sizes = component.trace_log_degree_bounds();
+
+    commitment_scheme.commit(proof.commitments[0], &amp;sizes[0], channel);
+    channel.mix_u64(log_size as u64);
+    commitment_scheme.commit(proof.commitments[1], &amp;sizes[1], channel);
+    commitment_scheme.commit(proof.commitments[2], &amp;sizes[2], channel);
+
+    verify(&amp;[&amp;component], channel, commitment_scheme, proof).unwrap();</code></pre>
+<p>When we verify the proof, as promised, we check that the <code>claimed_sum</code>, which is the sum of the fractions in the LogUp columns, is 0.</p>
+<p>And that's it! We have successfully created a static lookup for a range-check.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../air-development/preprocessed-trace/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../air-development/dynamic-lookups/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../air-development/preprocessed-trace/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../air-development/dynamic-lookups/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,1445 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>stwo-book</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+        <link rel="stylesheet" href="./mdbook-admonish-custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">stwo-book</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p>Stwo is a state-of-the-art framework for creating ZK proofs that boasts many compelling features to the ZK ecosystem, some of which include:</p>
+<ul>
+<li>Provides both the frontend and backend of creating ZK proofs</li>
+<li>Frontend is designed to be flexible to allow you to express your own proof system</li>
+<li>Backend leverages Circle STARKs over the Mersenne31 prime field for fast prover performance</li>
+<li>Seamlessly integrated with Cairo</li>
+</ul>
+<p>This book will guide you through why you should create a proof system using Stwo, guide you through the process of creating your own proof system, and also provide in-depth explanations of the inner workings of Stwo.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="why-use-a-proof-system"><a class="header" href="#why-use-a-proof-system">Why Use a Proof System?</a></h1>
+<p>At its core, a proof system can prove the validity of a statement \(C(x)=y\) where \(C\) is a representation of some logic, while \(x\) is an input and \(y\) the output of said logic. (Assuming that we are only dealing with logic that can be expressed as a computation, we will henceforth refer to this logic as a computation). This means that we can verify the validity of a statement by either directly running the computation, or by verifying the validity of the proof produced with the proof system. The verifier can benefit from the second option in terms of time and space, if the time to verify the proof is faster than the time to run the computation, or the size of the proof is smaller than the input to the statement.</p>
+<p>This property of a proof system is often referred to as <strong>succinctness</strong>, and it is exactly why proof systems have seen wide adoption in the blockchain space, where computation on-chain is much more expensive compared to off-chain computation. Using a proof system, it becomes possible to replace a large collection of computation to be executed on-chain with a proof of execution of the same collection of computation and verifying it on-chain. This way, proof generation can be handled off-chain using large machines and only the proof verification needs to be done on-chain.</p>
+<p>But there are applications of proof systems beyond just blockchains. Since a proof is verifiable as well as succinct, it can also be used as auxiliary data to verify that the computation of an untrusted party was done correctly. For example, when we delegate computation to an untrusted server, we can ask it to provide a proof along with the computation result that the result indeed came from running a specific computation. Another example could be to ask a server running an ML model to provide proof that it ran inference on the correct model. The size of the accompanying proof and the time to verify it will be negligible compared to the cost of running the computation, but we gain the guarantee that the computation was done correctly.</p>
+<p>Another optional feature of proof systems is <strong>zero-knowledge</strong>, which means that the proof reveals nothing about the computation other than its validity. In general, the output \(y\) of the computation \(C(x)=y\) will be public (i.e. revealed to the verifier), but the input \(x\) may be split into public and private parts, so that the verifier does not learn anything about the private part. With this feature, the intermediate values computed by the prover while computing \(C(x)\) will also be hidden from the verifier.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="why-stwo"><a class="header" href="#why-stwo">Why Stwo?</a></h1>
+<p>Before we dive into why we should choose Stwo, let's define some terminology. When we talked about proof systems in the previous section, we were only referring to the part that takes a statement and outputs a proof. In reality, however, we first need to structure the statement in a way that it can be proven by the proof system. This structuring part is often referred to as the <strong>frontend</strong>, and the proof system is commonly called the <strong>backend</strong>.</p>
+<p>With that out of the way, let's dive into some of the advantages of using Stwo.</p>
+<p>First, Stwo is a standalone framework that provides both the frontend and backend and therefore handles the entire proving process. There are other frameworks that only provide the frontend or the backend, which has its advantages as its modular structure makes it possible to pick and choose a backend or frontend of one's liking. However, having a single integrated frontend and backend reduces the complexity of the system and is also easier to maintain.</p>
+<p>In addition, Stwo's frontend structures statements in the <strong>Algebraic Intermediate Representation (AIR)</strong>, which is a representation that is especially useful for proving statements that are repetitive (e.g. the CPU in a VM, which essentially repeats the same fetch-decode-execute over and over again).</p>
+<p>Stwo's backend is also optimized for prover performance. This is due to largely three factors.</p>
+<ol>
+<li>
+<p>It implements <strong>STARKs</strong>, or hash-based SNARKs, which boasts a faster prover compared to elliptic curve-based SNARKs like Groth16 or PLONK. This improvement comes mainly from running the majority of the computation in a small prime field (32 bits); Elliptic curve-based SNARKs, on the other hand, need to use big prime fields (e.g. 254-bit prime fields), which incur a lot of overhead as most computation does not require that many bits.</p>
+</li>
+<li>
+<p>Even amongst multiple STARK backends, however, Stwo provides state-of-the-art prover performance by running the <strong>Mersenne-31 prime field</strong> (modulo \(2^{31} - 1\)), which is faster than another popular 32-bit prime field like BabyBear (modulo \(2^{31} - 2^{27} + 1\)). We suggest going through <a href="https://blog.zksecurity.xyz/posts/circle-starks-1/">this post</a> for a breakdown of why this is the case.</p>
+</li>
+<li>
+<p>Finally, Stwo offers <strong>various CPU and GPU optimizations</strong> that improves prover performance as shown in <a href="why-stwo.html#fig-optimizations">Figure 1</a> below. It can also be compiled to WASM, allowing for fast proving in web environments.</p>
+</li>
+</ol>
+<div style="text-align: center;">
+<figure id="fig-optimizations">
+  <img src="./why-stwo-1.png" width="100%" style="height: auto;">
+  <figcaption><center><span style="font-size: 0.9em">Figure 1: Prover performance optimizations in Stwo</span></center></figcaption>
+</figure>
+</div>
+<p>One of the drawbacks of STARKs is that they have a larger proof size compared to elliptic curve-based SNARKs. One way to mitigate this drawback is by batching multiple proofs together to form a single proof.</p>
+<pre><code class="language-admonish">On zero-knowledge:
+
+As of the time of this writing, Stwo does not provide the "zero-knowledge" feature. "Zero-knowledge" here refers to the fact that the proof should not reveal any additional information other than the validity of the statement, which is not true for Stwo as it reveals to the verifier commitments to its witness values without hiding them by e.g. adding randomness. This reveals **some information** about the witness values, which may be used in conjunction with other information to infer the witness values.
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="air-development"><a class="header" href="#air-development">AIR Development</a></h1>
+<blockquote>
+<p>This section is intended for developers who want to create custom proofs using Stwo (proofs of custom VMs, ML inference, etc.). It assumes that the reader is familiar with Rust and has some background knowledge of cryptography (e.g. finite fields). It also assumes that the reader is familiar with the concept of zero-knowledge proofs and knows what they want to create a zero-knowledge proof for, but it does not assume any firsthand experience with zero-knowledge proof systems.</p>
+</blockquote>
+<pre><code class="language-admonish">All the code that appears throughout this section is available [here](https://github.com/zksecurity/stwo-book/tree/main/stwo-examples).
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="writing-a-simple-air"><a class="header" href="#writing-a-simple-air">Writing a Simple AIR</a></h1>
+<figure id="fig-tutorial-1">
+    <img src="air-development/writing-a-simple-air/./index-1.png" width="100%" />
+    <figcaption><center><span style="font-size: 0.9em">Figure 1: Proving lifecycle in Stwo</span></center></figcaption>
+</figure>
+<p>Welcome to the guide for writing AIRs in Stwo!</p>
+<p>In this "Writing a Simple AIR" section, we will go through the process of writing a simple AIR from scratch. This requires some understanding of the proving lifecycle in Stwo, so we added a diagram showing a high-level overview of the whole process. As we go through each step, please note that the diagram may contain more steps than the code. This is because there are steps that are abstracted away by the Stwo implementation, but is necessary for understanding the code that we need to write when creating an AIR.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="hello-zk-world"><a class="header" href="#hello-zk-world">Hello (ZK) World</a></h1>
+<p>Let's first set up a Rust project with Stwo.</p>
+<pre><code class="language-bash">$ cargo new stwo-example
+</code></pre>
+<p>We need to specify the nightly Rust compiler to use Stwo.</p>
+<pre><code class="language-bash">$ echo -e "[toolchain]\nchannel = \"nightly-2025-01-02\"" &gt; rust-toolchain.toml
+</code></pre>
+<p>Now let's edit the <code>Cargo.toml</code> file as follows:</p>
+<pre><code class="language-rust ignore">[package]
+name = "stwo-examples"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+stwo-prover = { git = "https://github.com/starkware-libs/stwo.git", rev = "92984c060b49d0db05e021883755fac0a71a2fa7" }
+num-traits = "0.2.17"
+itertools = "0.12.0"
+rand = "0.8.5"</code></pre>
+<p>We are all set!</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="writing-a-spreadsheet"><a class="header" href="#writing-a-spreadsheet">Writing a Spreadsheet</a></h1>
+<figure id="fig-writing-a-spreadsheet-1">
+    <img src="air-development/writing-a-simple-air/./writing-a-spreadsheet-1.png" width="100%" />
+    <figcaption><center><span style="font-size: 0.9em">Figure 1: Prover workflow: Create a table</span></center></figcaption>
+</figure>
+<p>In order to write a proof, we first need to create a table of rows and columns. This is no different than writing integers to an Excel spreadsheet as we can see in <a href="air-development/writing-a-simple-air/writing-a-spreadsheet.html#fig-writing-a-spreadsheet-2">Figure 1</a>.</p>
+<figure id="fig-writing-a-spreadsheet-2">
+    <img src="air-development/writing-a-simple-air/./writing-a-spreadsheet-2.png" width="100%" />
+    <figcaption><center><span style="font-size: 0.9em">Figure 2: From spreadsheet to table</span></center></figcaption>
+</figure>
+<p>But there is a slight caveat to consider when creating the table. Stwo implements <a href="https://en.wikipedia.org/wiki/Single_instruction,_multiple_data">SIMD operations</a> to speed up the prover in the CPU, but this requires providing the table cells in chunks of 16 rows. Simply put, this is because Stwo supports 16 lanes of 32-bit integers, which means that the same instruction can be run simultaneously for 16 different data.</p>
+<p>Alas, for our table, we will need to create 14 dummy rows to make the total number of rows equal to 16, as shown in <a href="air-development/writing-a-simple-air/writing-a-spreadsheet.html#fig-writing-a-spreadsheet-3">Figure 3</a>. For the sake of simplicity, however, we will omit the dummy rows in the diagrams of the following sections.</p>
+<figure>
+    <img src="air-development/writing-a-simple-air/./writing-a-spreadsheet-3.png" width="80%" style="display: block; margin: 0 auto;" />
+    <figcaption><center><span style="font-size: 0.9em">Figure 3: Creating a table with 16 rows</span></center></figcaption>
+</figure>
+<p>Given all that, let's create this table using Stwo.</p>
+<pre><code class="language-rust ignore">use stwo_prover::core::{
+    backend::{
+        simd::{column::BaseColumn, m31::N_LANES},
+        Column,
+    },
+    fields::m31::M31,
+};
+
+fn main() {
+    let num_rows = N_LANES;
+
+    let mut col_1 = BaseColumn::zeros(num_rows as usize);
+    col_1.set(0, M31::from(1));
+    col_1.set(1, M31::from(7));
+
+    let mut col_2 = BaseColumn::zeros(num_rows as usize);
+    col_2.set(0, M31::from(5));
+    col_2.set(1, M31::from(11));
+}</code></pre>
+<p>As mentioned above, we instantiate the <code>num_rows</code> of our table as <code>N_LANES=16</code> to accommodate SIMD operations. Then we create a <code>BaseColumn</code> of <code>N_LANES=16</code> rows for each column and populate the first two rows with our values and the rest with dummy values.</p>
+<p>Note that the values in the <code>BaseColumn</code> need to be of type <code>M31</code>, which refers to the Mersenne-31 prime field that Stwo uses. This means that the integers in the table must be in the range \([0, 2^{31}-1]\).</p>
+<p>Now that we have our table, let's move on!</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="from-spreadsheet-to-trace-polynomials"><a class="header" href="#from-spreadsheet-to-trace-polynomials">From Spreadsheet to Trace Polynomials</a></h1>
+<figure id="fig-from-spreadsheet-to-trace-polynomials-1">
+    <img src="air-development/writing-a-simple-air/./from-spreadsheet-to-trace-polynomials-1.png" width="100%" />
+    <figcaption><center><span style="font-size: 0.9em">Figure 1: Prover workflow: Trace polynomials</span></center></figcaption>
+</figure>
+<p>In the previous section, we created a table (aka spreadsheet). In this section, we will convert the table into something called trace polynomials.</p>
+<figure id="fig-from-spreadsheet-to-trace-polynomials-2">
+    <img src="air-development/writing-a-simple-air/./from-spreadsheet-to-trace-polynomials-2.png" width="100%" />
+    <figcaption><center><span style="font-size: 0.9em">Figure 2: From spreadsheet to trace polynomials</span></center></figcaption>
+</figure>
+<p>As we can see in <a href="air-development/writing-a-simple-air/from-spreadsheet-to-trace-polynomials.html#fig-from-spreadsheet-to-trace-polynomials-2">Figure 2</a>, the cells in each column of the table can be seen as evaluations of a <a href="https://en.wikipedia.org/wiki/Lagrange_polynomial">Lagrange polynomial</a>. A characteristic of a Lagrange polynomial is that interpolating \(n\) distinct points will result in a unique polynomial of at most \(n-1\) degrees. So if we consider each row value \(f(x_i)\) as the evaluation of a distinct point \(x_i\), we can get a unique polynomial of degree \(num\_rows-1\) for each column, which is also known as a <strong>trace polynomial</strong>.</p>
+<p>We will explain why using a polynomial representation is useful in the next section, but for now, let's see how we can create trace polynomials for our code. Note that we are building upon the code from the previous section, so there's not much new code here.</p>
+<pre><code class="language-rust ignore">fn main() {
+    // --snip--
+
+    // Convert table to trace polynomials
+    let domain = CanonicCoset::new(log_num_rows).circle_domain();
+    let _trace: ColumnVec&lt;CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt;&gt; =
+        vec![col_1, col_2]
+            .into_iter()
+            .map(|col| CircleEvaluation::new(domain, col))
+            .collect();
+}</code></pre>
+<p>Here, <code>domain</code> refers to the \(x_i\) values used to interpolate the trace polynomials. For example, \(x_1, x_2\) values in <a href="air-development/writing-a-simple-air/from-spreadsheet-to-trace-polynomials.html#fig-from-spreadsheet-to-trace-polynomials-2">Figure 2</a> are the domain values for our example (in reality, we need the size of the domain needs to be 16 as we have 16 rows). We can ignore terms like <code>CanonicCoset</code> and <code>.circle_domain()</code> for now, but should note that the <code>log_num_rows</code> in <code>CanonicCoset::new(log_num_rows).circle_domain()</code> needs to be equal to the log of the actual number of rows that are used in the table.</p>
+<p>Now that we have created 2 trace polynomials for our 2 columns, let's move on to the next section where we commit to those polynomials!</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="committing-to-the-trace-polynomials"><a class="header" href="#committing-to-the-trace-polynomials">Committing to the Trace Polynomials</a></h1>
+<figure id="fig-committing-to-the-trace-polynomials-1">
+    <img src="air-development/writing-a-simple-air/./committing-to-the-trace-polynomials-1.png" width="100%" />
+    <figcaption><center><span style="font-size: 0.9em">Figure 1: Prover workflow: Commitment</span></center></figcaption>
+</figure>
+<p>Now that we have created the trace polynomials, we need to commit to them.</p>
+<p>As we can see in <a href="air-development/writing-a-simple-air/committing-to-the-trace-polynomials.html#fig-committing-to-the-trace-polynomials-1">Figure 1</a>, Stwo commits to the trace polynomials by first expanding the trace polynomials (i.e. adding more evaluations) and then committing to the expanded evaluations using a merkle tree.</p>
+<p>The rate of expansion (commonly referred to as the <em>blowup factor</em>) is a parameter of FRI and readers who are interested in learning more about how to set this parameter can refer to the <a href="https://eprint.iacr.org/2024/278">Circle-STARKs paper</a> (We are also working on adding an explanation in the book).</p>
+<p>For the puposes of this tutorial, we will use the default values for the blowup factor.</p>
+<pre><code class="language-rust ignore">const CONSTRAINT_EVAL_BLOWUP_FACTOR: u32 = 1;
+
+fn main() {
+    // --snip--
+
+    // Config for FRI and PoW
+    let config = PcsConfig::default();
+
+    // Precompute twiddles for evaluating and interpolating the trace
+    let twiddles = SimdBackend::precompute_twiddles(
+        CanonicCoset::new(
+            log_num_rows + CONSTRAINT_EVAL_BLOWUP_FACTOR + config.fri_config.log_blowup_factor,
+        )
+        .circle_domain()
+        .half_coset,
+    );
+
+    // Create the channel and commitment scheme
+    let channel = &amp;mut Blake2sChannel::default();
+    let mut commitment_scheme =
+        CommitmentSchemeProver::&lt;SimdBackend, Blake2sMerkleChannel&gt;::new(config, &amp;twiddles);
+
+    // Commit to the preprocessed trace
+    let mut tree_builder = commitment_scheme.tree_builder();
+    tree_builder.extend_evals(vec![]);
+    tree_builder.commit(channel);
+
+    // Commit to the size of the trace
+    channel.mix_u64(log_num_rows as u64);
+
+    // Commit to the original trace
+    let mut tree_builder = commitment_scheme.tree_builder();
+    tree_builder.extend_evals(trace);
+    tree_builder.commit(channel);
+}</code></pre>
+<p>We begin with some setup. First, we create a default <code>PcsConfig</code> instance, which sets the values for the FRI and PoW operations. Setting non-default values is related to the security of the proof, which is out of the scope for this tutorial.</p>
+<p>Next, we precompute twiddles, also known as the <em>domain</em> over which the rows in the table are evaluated on. The log size of this domain is set to <code>log_num_rows + CONSTRAINT_EVAL_BLOWUP_FACTOR + config.fri_config.log_blowup_factor</code>, which is the max log size of the domain that is needed throughout the proving process. Why we need to add <code>CONSTRAINT_EVAL_BLOWUP_FACTOR</code> will be explained in the next section.</p>
+<p>The final setup is creating a commitment scheme and a channel. The commitment scheme will be used to commit to the trace polynomials as merkle trees, while the channel will be used to keep a running hash of all data in the proving process (i.e. transcript of the proof). This is part of the Fiat-Shamir transformation where randomness can be generated safely even in a non-interactive setting. Here, we use the <code>Blake2sChannel</code> and <code>Blake2sMerkleChannel</code> for the channel and commitment scheme, respectively, but we can also use the <code>Poseidon252Channel</code> and <code>Poseidon252MerkleChannel</code> pair.</p>
+<p>Now that we have our setup, we can commit to the trace polynomials. But before we do so, we need to first commit to an empty vector called a <em>preprocessed trace</em>, which doesn't do anything but is required by Stwo. Then, we need to commit to the size of the trace, which is a vital part of the proof system that the prover should not be able to cheat on. Once we have done these, we can finally commit to the original trace polynomials.</p>
+<p>Now that we have committed to the trace polynomials, we can move on to how we can create constraints over the trace polynomials!</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="evaluating-constraints-over-trace-polynomials"><a class="header" href="#evaluating-constraints-over-trace-polynomials">Evaluating Constraints Over Trace Polynomials</a></h1>
+<figure id="fig-constraints-over-trace-polynomials-1">
+    <img src="air-development/writing-a-simple-air/./constraints-over-trace-polynomials-1.png" width="100%" />
+    <figcaption><center><span style="font-size: 0.9em">Figure 1: Prover workflow: Constraints</span></center></figcaption>
+</figure>
+<h2 id="proving-spreadsheet-functions"><a class="header" href="#proving-spreadsheet-functions">Proving Spreadsheet Functions</a></h2>
+<p>When we want to perform computations over the cells in a spreadsheet, we don't want to manually fill in the computed values. Instead, we leverage spreadsheet functions to autofill cells based on a given computation.</p>
+<p>We can do the same thing with our table, except in addition to autofilling cells, we can also create a constraint that the result was computed correctly. Remember that the purpose of using a proof system is that the verifier can verify a computation was executed correctly without having to execute it themselves? Well, that's exactly why we need to create a constraint.</p>
+<p>Now let's say we want to add a new column <code>C</code> to our spreadsheet that computes the product of the previous columns plus the first column. We can set <code>C1</code> as <code>A1 * B1 + A1</code> as in <a href="air-development/writing-a-simple-air/constraints-over-trace-polynomials.html#fig-constraints-over-trace-polynomials-2">Figure 2</a>.</p>
+<p>In the same vein, we can create a new column in our table that computes the sum of the two previous columns. And we can constrain the value of the third column by creating an equation that must equal 0: <code>col1_row1 * col2_row1 + col1_row1 - col3_row1 = 0</code>.</p>
+<figure id="fig-constraints-over-trace-polynomials-2">
+    <img src="air-development/writing-a-simple-air/./constraints-over-trace-polynomials-2.png" width="100%" />
+    <figcaption><center><span style="font-size: 0.9em">Figure 2: Proving spreadsheet functions as constraints</span></center></figcaption>
+</figure>
+<h2 id="identical-constraints-every-row"><a class="header" href="#identical-constraints-every-row">Identical Constraints Every Row</a></h2>
+<p>Obviously, as can be seen in <a href="air-development/writing-a-simple-air/constraints-over-trace-polynomials.html#fig-constraints-over-trace-polynomials-2">Figure 2</a>, our new constraint is satisfied for every row in the table. This means that we can substitute creating a constraint for each row with a single constraint over the columns, i.e. the trace polynomials.</p>
+<p>Thus, <code>col1_row1 * col2_row1 + col1_row1 - col3_row1 = 0</code> becomes \(f_1(x) \cdot f_2(x) + f_1(x) - f_3(x) = 0\).</p>
+<pre><code class="language-admonish">The idea that all rows must have the same constraint may seem restrictive, compared to say a spreadsheet where we can define different functions for different rows. However, we will show in later sections how to handle such use-cases.
+
+(Spoiler alert: it involves selectors and components)
+</code></pre>
+<h2 id="composition-polynomial"><a class="header" href="#composition-polynomial">Composition Polynomial</a></h2>
+<p>We will now give a name to the polynomial that expresses the constraint: a <strong>composition polynomial</strong>.</p>
+<p>\(C(x) = f_1(x) \cdot f_2(x) + f_1(x) - f_3(x)\)</p>
+<p>Basically, in order to prove that the constraints are satisfied, we need to show that the composition polynomial evaluates to 0 over the original domain (i.e. the domain of size the number of rows in the table).</p>
+<p>But first, as can be seen in <a href="air-development/writing-a-simple-air/constraints-over-trace-polynomials.html#fig-constraints-over-trace-polynomials-1">Figure 1</a>, we need to expand the evaluations of the trace polynomials by a factor of 2. This is because the composition polynomial has degree 2, while the trace polynomials have degree 1, and thus we need more evaluations to uniquely determine the Lagrange polynomial.</p>
+<p>Once we have the expanded evaluations, we can evaluate the composition polynomial. Checking that the composition polynomial evaluates to 0 over the original domain is done in FRI, so once again we need to expand the composition polynomial evaluations by a factor of 2 and commit to them.</p>
+<p>We'll see in the code below how this is implemented.</p>
+<h2 id="code"><a class="header" href="#code">Code</a></h2>
+<pre><code class="language-rust ignore">struct TestEval {
+    log_size: u32,
+}
+
+impl FrameworkEval for TestEval {
+    fn log_size(&amp;self) -&gt; u32 {
+        self.log_size
+    }
+
+    fn max_constraint_log_degree_bound(&amp;self) -&gt; u32 {
+        self.log_size + CONSTRAINT_EVAL_BLOWUP_FACTOR
+    }
+
+    fn evaluate&lt;E: EvalAtRow&gt;(&amp;self, mut eval: E) -&gt; E {
+        let col_1 = eval.next_trace_mask();
+        let col_2 = eval.next_trace_mask();
+        let col_3 = eval.next_trace_mask();
+        eval.add_constraint(col_1.clone() * col_2.clone() + col_1.clone() - col_3.clone());
+        eval
+    }
+}
+
+fn main() {
+    // --snip--
+
+    let mut col_3 = BaseColumn::zeros(num_rows);
+    col_3.set(0, col_1.at(0) * col_2.at(0) + col_1.at(0));
+    col_3.set(1, col_1.at(1) * col_2.at(1) + col_1.at(1));
+
+    // Convert table to trace polynomials
+    let domain = CanonicCoset::new(log_num_rows).circle_domain();
+    let trace: ColumnVec&lt;CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt;&gt; =
+        vec![col_1, col_2, col_3]
+            .into_iter()
+            .map(|col| CircleEvaluation::new(domain, col))
+            .collect();
+
+    // --snip--
+
+    // Create a component
+    let _component = FrameworkComponent::&lt;TestEval&gt;::new(
+        &amp;mut TraceLocationAllocator::default(),
+        TestEval {
+            log_size: log_num_rows,
+        },
+        QM31::zero(),
+    );
+}</code></pre>
+<p>First, we add a new column <code>col_3</code> that contains the result of the computation: <code>col_1 * col_2 + col_1</code>.</p>
+<p>Then, to create a constraint over the trace polynomials, we first create a <code>TestEval</code> struct that implements the <code>FrameworkEval</code> trait. Then, we add our constraint logic in the <code>FrameworkEval::evaluate</code> function. Note that this function is called for every row in the table, so we only need to define the constraint once.</p>
+<p>Inside <code>FrameworkEval::evaluate</code>, we call <code>eval.next_trace_mask()</code> consecutively three times, retrieving the cell values of all three columns (see <a href="air-development/writing-a-simple-air/constraints-over-trace-polynomials.html#fig-constraints-over-trace-polynomials-3">Figure 3</a> below for a visual representation). Once we retrieve all three column values, we add a constraint of the form <code>col_1 * col_2 + col_1 - col_3</code>, which should equal 0.</p>
+<figure id="fig-constraints-over-trace-polynomials-3">
+    <img src="air-development/writing-a-simple-air/./constraints-over-trace-polynomials-3.png" width="100%" />
+    <figcaption><center><span style="font-size: 0.9em">Figure 3: Evaluate function</span></center></figcaption>
+</figure>
+<p>We also need to implement <code>FrameworkEval::max_constraint_log_degree_bound(&amp;self)</code> for <code>FrameworkEval</code>. As mentioned in the <a href="air-development/writing-a-simple-air/constraints-over-trace-polynomials.html#composition-polynomial">Composition Polynomial section</a>, we need to expand the trace polynomial evaluations because the degree of our composition polynomial is higher than the trace polynomial. Expanding it by the lowest value <code>CONSTRAINT_EVAL_BLOWUP_FACTOR=1</code> is sufficient for our example as the degree of our composition polynomial is not very high, so we can return <code>self.log_size + CONSTRAINT_EVAL_BLOWUP_FACTOR</code>. For those who are interested in how to set this value in general, we leave a detailed note below.</p>
+<pre><code class="language-admonish id=&quot;max_constraint_log_degree_bound&quot;">**What value to set for `max_constraint_log_degree_bound(&amp;self)`?**
+
+`self.log_size + max(1, ceil(log2(max_degree - 1)))`, where `max_degree` is the maximum degree of all defined constraint polynomials.
+
+e.g.
+- degree 1 - 3: `self.log_size + 1`
+- degree 4 - 5: `self.log_size + 2`
+- degree 6 - 9: `self.log_size + 3`
+- degree 10 - 17: `self.log_size + 4`
+- ...
+</code></pre>
+<pre><code class="language-admonish">Now that we know the degree of the composition polynomial, we can also explain the following code:
+```rust,ignore
+    // Precompute twiddles for evaluating and interpolating the trace
+    let twiddles = SimdBackend::precompute_twiddles(
+        CanonicCoset::new(
+            log_num_rows + CONSTRAINT_EVAL_BLOWUP_FACTOR + config.fri_config.log_blowup_factor,
+        )
+        .circle_domain()
+        .half_coset,
+    );
+```
+
+Why is the `log_size` of the domain set to `log_num_rows + CONSTRAINT_EVAL_BLOWUP_FACTOR + config.fri_config.log_blowup_factor` here? As we can see in [Figure 1](#fig-constraints-over-trace-polynomials-1), once we have the composition polynomial, we need to expand it again for before committing to it for the FRI step. Thus, the maximum size of the domain that we need in the entire proving process is the FRI blow-up factor times the degree of the composition polynomial.
+
+</code></pre>
+<p>Using the new <code>TestEval</code> struct, we can create a new <code>FrameworkComponent::&lt;TestEval&gt;</code> component, which the prover will use to evaluate the constraint. For now, we can ignore the other parameters of the <code>FrameworkComponent::&lt;TestEval&gt;</code> constructor.</p>
+<p>We now move on to the final section where we finally create and verify a proof.</p>
+<pre><code class="language-admonish definition">Finally, we can break down what an Algebraic Intermediate Representation (AIR) means.
+
+*Algebraic* means that we are using polynomials to represent the constraints.
+
+*Intermediate Representation* means that this is a modified representation of our statement so that it can be proven by a proof system.
+
+So AIR is just another way of saying that we are representing statements to be proven as constraints over polynomials.
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="proving-and-verifying-an-air"><a class="header" href="#proving-and-verifying-an-air">Proving and Verifying an AIR</a></h1>
+<figure id="fig-proving-an-air-1">
+    <img src="air-development/writing-a-simple-air/./proving-an-air-1.png" width="100%" />
+    <figcaption><center><span style="font-size: 0.9em">Figure 1: Prover workflow: perform FRI and PoW</span></center></figcaption>
+</figure>
+<p>We're finally ready to take the final step--prove and verify an AIR!</p>
+<p>Since the code is relatively short, let us present it first and then go over the details.</p>
+<pre><code class="language-rust ignore">fn main() {
+    // --snip--
+
+    // Prove
+    let proof = prove(&amp;[&amp;component], channel, commitment_scheme).unwrap();
+
+    // Verify
+    let channel = &amp;mut Blake2sChannel::default();
+    let commitment_scheme = &amp;mut CommitmentSchemeVerifier::&lt;Blake2sMerkleChannel&gt;::new(config);
+    let sizes = component.trace_log_degree_bounds();
+
+    commitment_scheme.commit(proof.commitments[0], &amp;sizes[0], channel);
+    channel.mix_u64(log_num_rows as u64);
+    commitment_scheme.commit(proof.commitments[1], &amp;sizes[1], channel);
+
+    verify(&amp;[&amp;component], channel, commitment_scheme, proof).unwrap();
+}</code></pre>
+<h2 id="prove"><a class="header" href="#prove">Prove</a></h2>
+<p>As you can see, there is only a single line of code added to create the proof. The <code>prove</code> function performs the FRI and PoW operations under the hood, although technically, the constraint related steps in <a href="air-development/writing-a-simple-air/proving-an-air.html#fig-proving-an-air-1">Figure 1</a> were not performed in the previous section and are only performed once <code>prove</code> is called.</p>
+<h2 id="verify"><a class="header" href="#verify">Verify</a></h2>
+<p>In order to verify our proof, we need to check that the constraints are satisfied using the commitments from the proof. In order to do that, we need to set up a <code>Blake2sChannel</code> and <code>CommitmentSchemeVerifier&lt;Blake2sMerkleChannel&gt;</code>, along with the same <code>PcsConfig</code> that we used when creating the proof. Then, we need to recreate the running hash channel by passing the merkle tree commitments and the <code>log_num_rows</code> to the <code>CommitmentSchemeVerifier</code> instance by calling <code>commit</code> (remember, the order is important!). Then, we can verify the proof using the <code>verify</code> function.</p>
+<pre><code class="language-admonish exercise">Try setting the dummy values in the table to 1 instead of 0. Does it fail? If so, can you see why?
+</code></pre>
+<p>Congratulations! We have come full circle. We now know how to create a table, convert it to trace polynomials, commit to them, create constraints over the trace polynomials, and prove and verify the constraints (i.e. an AIR). In the following sections, we will go over some more complicated AIRs to explain Stwo's other features.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="preprocessed-trace"><a class="header" href="#preprocessed-trace">Preprocessed Trace</a></h1>
+<blockquote>
+<p>This section and the following sections are intended for developers who have completed the <a href="air-development/preprocessed-trace/air-development/writing-a-simple-air/index.html">Writing a Simple AIR</a> section or are already familiar with the workflow of creating an AIR. If you have not gone through the <a href="air-development/preprocessed-trace/air-development/writing-a-simple-air/index.html">Writing a Simple AIR</a> section, we recommend you to do so first as the following sections gloss over a lot of boilerplate code.</p>
+</blockquote>
+<p>For those of you who have completed the <a href="air-development/preprocessed-trace/air-development/writing-a-simple-air/index.html">Writing a Simple AIR</a> tutorial, you should now be familiar with the concept of a trace as a table of integers that are filled in by the prover (we will now refer to this as the <strong>original trace</strong>).</p>
+<p>In addition to the original trace, Stwo also has a concept of a <strong>preprocessed trace</strong>, which is a table whose values are fixed and therefore cannot be arbitrarily chosen by the prover. In other words, these are columns whose values are known in advance of creating a proof and essentially agreed upon by both the prover and the verifier.</p>
+<p>One of the use cases of the preprocessed trace is as <em>a selector for different constraints</em>. Remember that in an AIR, the same constraints are applied to every row of the trace? If we go back to the spreadsheet analogy, this means that we can't create a spreadsheet that runs different computations for different rows. We can get around this issue by composing multiple constraints using a selector column as part of the preprocessed trace. For example, let's say we want to create a constraint that runs different computations for the first 2 rows and the next 2 rows. We can do this by using a preprocessed trace that has value 1 for the first 2 rows and 0 for the next 2 rows, essentially as a selector for the first 2 rows. The resulting single constraint composes the two different constraints by adding them together: \((1 - \text{preprocessed_trace}) * \text{constraint_1} + \text{preprocessed_trace} * \text{constraint_2}=0\)</p>
+<figure id="fig-preprocessed-trace-selector">
+    <img src="air-development/preprocessed-trace/./preprocessed-trace-selector.png" width="100%" />
+    <figcaption><center><span style="font-size: 0.9em">Figure 1: Preprocessed trace as a selector</span></center></figcaption>
+</figure>
+<p>Another use case is to use the preprocessed trace for <em>expressing constant values used in the constraints</em>. For example, when creating a hash function in an AIR, we often need to use round constants, which the verifier needs to be able to verify or the resulting hash may be invalid. We can also "look up" the constant values as an optimization technique, which we will discuss in more detail in the next section.</p>
+<p>In this section, we will explore how to implement a preprocessed trace as a selector, and we will implement the simplest form: a single <code>isFirst</code> column, where the value is 1 for the first row and 0 for all other rows.</p>
+<pre><code class="language-admonish">Boilerplate code is omitted for brevity. Please refer to the [full example code](https://github.com/zksecurity/stwo-book/blob/main/stwo-examples/examples/preprocessed_trace.rs) for the full implementation.
+</code></pre>
+<pre><code class="language-rust ignore">struct IsFirstColumn {
+    pub log_size: u32,
+}
+
+#[allow(dead_code)]
+impl IsFirstColumn {
+    pub fn new(log_size: u32) -&gt; Self {
+        Self { log_size }
+    }
+
+    pub fn gen_column(&amp;self) -&gt; CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt; {
+        let mut col = BaseColumn::zeros(1 &lt;&lt; self.log_size);
+        col.set(0, M31::from(1));
+        CircleEvaluation::new(CanonicCoset::new(self.log_size).circle_domain(), col)
+    }
+
+    pub fn id(&amp;self) -&gt; PreProcessedColumnId {
+        PreProcessedColumnId {
+            id: format!("is_first_{}", self.log_size),
+        }
+    }
+}</code></pre>
+<p>First, we need to define a <code>IsFirstColumn</code> struct that will be used as a preprocessed trace. We will use the <code>gen_column()</code> function to generate a <code>CircleEvaluation</code> struct that is 1 for the first row and 0 for all other rows. The <code>id()</code> function is needed to identify this column when evaluating the constraints.</p>
+<pre><code class="language-rust ignore">fn main() {
+    ...
+    // Create and commit to the preprocessed trace
+    let is_first_column = IsFirstColumn::new(log_size);
+    let mut tree_builder = commitment_scheme.tree_builder();
+    tree_builder.extend_evals(vec![is_first_column.gen_column()]);
+    tree_builder.commit(channel);
+
+    // Commit to the size of the trace
+    channel.mix_u64(log_size as u64);
+
+    // Create and commit to the original trace
+    let trace = gen_trace(log_size);
+    let mut tree_builder = commitment_scheme.tree_builder();
+    tree_builder.extend_evals(trace);
+    tree_builder.commit(channel);
+    ...
+}</code></pre>
+<p>Then, in our main function, we will create and commit to the preprocessed and original traces. For those of you who are curious about why we need to commit to the trace, please refer to the <a href="air-development/preprocessed-trace/../simplest-air/committing-to-the-trace-polynomials.html">Committing to the Trace Polynomials</a> section.</p>
+<pre><code class="language-rust ignore">struct TestEval {
+    is_first_id: PreProcessedColumnId,
+    log_size: u32,
+}
+
+impl FrameworkEval for TestEval {
+    fn log_size(&amp;self) -&gt; u32 {
+        self.log_size
+    }
+
+    fn max_constraint_log_degree_bound(&amp;self) -&gt; u32 {
+        self.log_size + CONSTRAINT_EVAL_BLOWUP_FACTOR
+    }
+
+    fn evaluate&lt;E: EvalAtRow&gt;(&amp;self, mut eval: E) -&gt; E {
+        let is_first = eval.get_preprocessed_column(self.is_first_id.clone());
+
+        let col_1 = eval.next_trace_mask();
+        let col_2 = eval.next_trace_mask();
+        let col_3 = eval.next_trace_mask();
+
+        // If is_first is 1, then the constraint is col_1 * col_2 - col_3 = 0
+        // If is_first is 0, then the constraint is col_1 * col_2 + col_1 - col_3 = 0
+        eval.add_constraint(
+            (col_1.clone() * col_2.clone() - col_3.clone()) * is_first.clone()
+                + (col_1.clone() * col_2.clone() + col_1.clone() - col_3.clone())
+                    * (E::F::from(M31::from(1)) - is_first.clone()),
+        );
+
+        eval
+    }
+}</code></pre>
+<p>Now that we have the traces, we need to create a struct that contains the logic for evaluating the constraints. As mentioned before, we need to use the <code>is_first_id</code> field to retrieve the row value of the <code>IsFirstColumn</code> struct. Then, we compose two constraints using the <code>IsFirstColumn</code> row value as a selector and adding them together.</p>
+<p>If you're unfamiliar with how <code>max_constraint_log_degree_bound(&amp;self)</code> should be implemented, please refer to <a href="air-development/preprocessed-trace/../simplest-air/constraints-over-trace-polynomials.html#max_constraint_log_degree_bound">this note</a>.</p>
+<pre><code class="language-rust ignore">fn main() {
+    ...
+    // Create a component
+    let component = FrameworkComponent::&lt;TestEval&gt;::new(
+        &amp;mut TraceLocationAllocator::default(),
+        TestEval {
+            is_first_id: is_first_column.id(),
+            log_size,
+        },
+        QM31::zero(),
+    );
+
+    // Prove
+    let proof = prove(&amp;[&amp;component], channel, commitment_scheme).unwrap();
+
+    // Verify
+    let channel = &amp;mut Blake2sChannel::default();
+    let commitment_scheme = &amp;mut CommitmentSchemeVerifier::&lt;Blake2sMerkleChannel&gt;::new(config);
+    let sizes = component.trace_log_degree_bounds();
+
+    commitment_scheme.commit(proof.commitments[0], &amp;sizes[0], channel);
+    channel.mix_u64(log_size as u64);
+    commitment_scheme.commit(proof.commitments[1], &amp;sizes[1], channel);
+
+    verify(&amp;[&amp;component], channel, commitment_scheme, proof).unwrap();
+}</code></pre>
+<p>Finally, we can create a <code>FrameworkComponent</code> using the <code>TestEval</code> struct and then prove and verify the component.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="static-lookups"><a class="header" href="#static-lookups">Static Lookups</a></h1>
+<p>In the previous section, we showed how to create a preprocessed trace. In this section, we will introduce the concept of <em>static lookups</em>, where we will create columns that look up values from a preprocessed trace.</p>
+<pre><code class="language-admonish">Readers who are unfamiliar with the concept of lookups can refer to the [Lookups](../../how-it-works/lookups.md) section for a quick introduction.
+</code></pre>
+<p>Specifically, we will implement a <strong>range-check</strong>. A range-check is a technique used to check that a certain value is within a given range. This proves useful especially in proof systems like Stwo that uses finite fields because it allows checking for underflow and overflow.</p>
+<p>A range-check checks that all values in a column are within a certain range. For example, as in <a href="air-development/static-lookups/index.html#fig-range-check">Figure 1</a>, we can check that all values in the lookup columns are between 0 and 3. We do this by creating a multiplicity column that counts the number of times each value in the preprocessed trace appears in the lookup columns.</p>
+<p>Then, we create two LogUp columns. The first column contains in each row a fraction where the nominator is the multiplicity and the denominator is the random linear combination of the value in the range-check column. For example, for row 1, the fraction should be \(\dfrac{2}{X-0}\). Note that in <a href="air-development/static-lookups/index.html#fig-range-check">Figure 1</a>, the nominator is actually \(-2\), i.e. we apply a negation to the multiplicity, because we want the sum of the first column to be equal to the sum of the second column.</p>
+<p>The second column contains fractions where the nominator is always 1 and the denominator is the random linear combination of the value in the lookup column. Note that a single row batches two lookup tables by adding two fractions together.</p>
+<figure id="fig-range-check" style="text-align: center;">
+    <img src="air-development/static-lookups/./range-check.png" width="100%" />
+    <figcaption><center><span style="font-size: 0.9em">Figure 1: Range-check lookup</span></center></figcaption>
+</figure>
+<p>If you stare at the LogUp columns hard enough, you'll notice that if we add all the fractions in the two columns together, we get 0. This is no coincidence! The prover will provide the sum of the LogUp columns and the verifier check in the open that this value is indeed 0.</p>
+<p>Now let's move on to the implementation.</p>
+<pre><code class="language-rust ignore">struct RangeCheckColumn {
+    pub log_size: u32,
+}
+
+#[allow(dead_code)]
+impl RangeCheckColumn {
+    pub fn new(log_size: u32) -&gt; Self {
+        Self { log_size }
+    }
+
+    pub fn gen_column(&amp;self) -&gt; CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt; {
+        let col = BaseColumn::from_iter((0..(1 &lt;&lt; self.log_size)).map(|i| M31::from(i)));
+        CircleEvaluation::new(CanonicCoset::new(self.log_size).circle_domain(), col)
+    }
+
+    pub fn id(&amp;self) -&gt; PreProcessedColumnId {
+        PreProcessedColumnId {
+            id: format!("range_check_{}_bits", self.log_size),
+        }
+    }
+}</code></pre>
+<p>First, we need to create the range-check column as a preprocessed column. This should look familiar to the code from the previous section.</p>
+<pre><code class="language-rust ignore">fn gen_trace(log_size: u32) -&gt; Vec&lt;CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt;&gt; {
+    // Create a table with random values
+    let mut rng = rand::thread_rng();
+    let mut lookup_col_1 =
+        BaseColumn::from_iter((0..(1 &lt;&lt; log_size)).map(|_| M31::from(rng.gen_range(0..16))));
+    let mut lookup_col_2 =
+        BaseColumn::from_iter((0..(1 &lt;&lt; log_size)).map(|_| M31::from(rng.gen_range(0..16))));
+
+    let mut multiplicity_col = BaseColumn::zeros(1 &lt;&lt; log_size);
+    lookup_col_1
+        .as_mut_slice()
+        .iter()
+        .chain(lookup_col_2.as_mut_slice().iter())
+        .for_each(|value| {
+            let index = value.0 as usize;
+            multiplicity_col.set(index, multiplicity_col.at(index) + M31::from(1));
+        });
+
+    // Convert table to trace polynomials
+    let domain = CanonicCoset::new(log_size).circle_domain();
+    vec![
+        lookup_col_1.clone(),
+        lookup_col_2.clone(),
+        multiplicity_col.clone(),
+    ]
+    .into_iter()
+    .map(|col| CircleEvaluation::new(domain, col))
+    .collect()
+}</code></pre>
+<p>Next, we create the trace columns. The first two columns are random values in the range \([0, 15]\), and the third column contains the counts of the values in the range-check column.</p>
+<pre><code class="language-rust ignore">relation!(LookupElements, 1);
+
+fn gen_logup_trace(
+    log_size: u32,
+    range_check_col: &amp;BaseColumn,
+    lookup_col_1: &amp;BaseColumn,
+    lookup_col_2: &amp;BaseColumn,
+    multiplicity_col: &amp;BaseColumn,
+    lookup_elements: &amp;LookupElements,
+) -&gt; (
+    Vec&lt;CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt;&gt;,
+    SecureField,
+) {
+    let mut logup_gen = LogupTraceGenerator::new(log_size);
+
+    let mut col_gen = logup_gen.new_col();
+    for simd_row in 0..(1 &lt;&lt; (log_size - LOG_N_LANES)) {
+        let numerator: PackedSecureField = PackedSecureField::from(multiplicity_col.data[simd_row]);
+        let denom: PackedSecureField = lookup_elements.combine(&amp;[range_check_col.data[simd_row]]);
+        col_gen.write_frac(simd_row, -numerator, denom);
+    }
+    col_gen.finalize_col();
+
+    let mut col_gen = logup_gen.new_col();
+    for simd_row in 0..(1 &lt;&lt; (log_size - LOG_N_LANES)) {
+        let lookup_col_1_val: PackedSecureField =
+            lookup_elements.combine(&amp;[lookup_col_1.data[simd_row]]);
+        let lookup_col_2_val: PackedSecureField =
+            lookup_elements.combine(&amp;[lookup_col_2.data[simd_row]]);
+        // 1 / denom1 + 1 / denom2 = (denom1 + denom2) / (denom1 * denom2)
+        let numerator = lookup_col_1_val + lookup_col_2_val;
+        let denom = lookup_col_1_val * lookup_col_2_val;
+        col_gen.write_frac(simd_row, numerator, denom);
+    }
+    col_gen.finalize_col();
+
+    logup_gen.finalize_last()
+}
+
+fn main() {
+    ...
+    // Draw random elements to use when creating the random linear combination of lookup values in the LogUp columns
+    let lookup_elements = LookupElements::draw(channel);
+
+    // Create and commit to the LogUp columns
+    let (logup_cols, claimed_sum) = gen_logup_trace(
+        log_size,
+        &amp;range_check_col,
+        &amp;trace[0],
+        &amp;trace[1],
+        &amp;trace[2],
+        &amp;lookup_elements,
+    );
+    ...
+}</code></pre>
+<p>Now we need to create the LogUp columns.</p>
+<p>First, note that we are creating a <code>LookupElements</code> instance using the macro <code>relation!</code>. This macro creates an API for performing random linear combinations. Under the hood, it creates two random values \(z, \alpha\) that can create a random linear combination of an arbitrary number of elements. In our case, we only need to combine one value (value in \([0,15]\)), which is why we pass in <code>1</code> to the macro.</p>
+<p>Inside <code>gen_logup_trace</code>, we create a <code>LogupTraceGenerator</code> instance. This is a helper class that allows us to create LogUp columns. Every time we create a new column, we need to call <code>new_col()</code> on the <code>LogupTraceGenerator</code> instance.</p>
+<p>You may notice that we are iterating over <code>BaseColumn</code> in chunks of 16, or <code>1 &lt;&lt; LOG_N_LANES</code> values. This is because we are using the <code>SimdBackend</code>, which runs 16 lanes simultaneously, so we need to preserve this structure. The <code>Packed</code> in <code>PackedSecureField</code> means that it packs 16 values into a single value.</p>
+<p>You may also notice that we are using a <code>SecureField</code> instead of just the <code>Field</code>. This is because the random value we created in <code>LookupElements</code> will be in the degree-4 extension field \(\mathbb{F}_{p^4}\). Interested readers can refer to the <a href="air-development/static-lookups/../../how-it-works/mersenne-prime.html">Mersenne Primes</a> section for more details.</p>
+<p>Once we set the fractions for each <code>simd_row</code>, we need to call <code>finalize_col()</code> to finalize the column. This process modifies the LogUp columns from individual fractions to cumulative sums of the fractions as shown in <a href="air-development/static-lookups/index.html#fig-finalize-col">Figure 2</a>.</p>
+<figure id="fig-finalize-col" style="text-align: center;">
+    <img src="air-development/static-lookups/./finalize-col.png" width="80%" />
+    <figcaption><center><span style="font-size: 0.9em">Figure 2: Finalizing each LogUp column</span></center></figcaption>
+</figure>
+<p>Finally, we need to call <code>finalize_last()</code> on the <code>LogupTraceGenerator</code> instance to finalize the LogUp columns, which will return the LogUp columns as well as the sum of the fractions in the LogUp columns.</p>
+<pre><code class="language-rust ignore">struct TestEval {
+    range_check_id: PreProcessedColumnId,
+    log_size: u32,
+    lookup_elements: LookupElements,
+}
+
+impl FrameworkEval for TestEval {
+    fn log_size(&amp;self) -&gt; u32 {
+        self.log_size
+    }
+
+    fn max_constraint_log_degree_bound(&amp;self) -&gt; u32 {
+        self.log_size + CONSTRAINT_EVAL_BLOWUP_FACTOR
+    }
+
+    fn evaluate&lt;E: EvalAtRow&gt;(&amp;self, mut eval: E) -&gt; E {
+        let range_check_col = eval.get_preprocessed_column(self.range_check_id.clone());
+
+        let lookup_col_1 = eval.next_trace_mask();
+        let lookup_col_2 = eval.next_trace_mask();
+        let multiplicity_col = eval.next_trace_mask();
+
+        eval.add_to_relation(RelationEntry::new(
+            &amp;self.lookup_elements,
+            -E::EF::from(multiplicity_col),
+            &amp;[range_check_col],
+        ));
+
+        eval.add_to_relation(RelationEntry::new(
+            &amp;self.lookup_elements,
+            E::EF::one(),
+            &amp;[lookup_col_1],
+        ));
+
+        eval.add_to_relation(RelationEntry::new(
+            &amp;self.lookup_elements,
+            E::EF::one(),
+            &amp;[lookup_col_2],
+        ));
+
+        eval.finalize_logup_batched(&amp;vec![0, 1, 1]);
+
+        eval
+    }
+}</code></pre>
+<p>The last piece of the puzzle is to create the constraints. We use the same <code>TestEval</code> struct as in the previous sections, but the <code>evaluate</code> function will look slightly different. Instead of calling <code>add_constraint</code> on the <code>EvalAtRow</code> instance, we will call <code>add_to_relation</code>, which recreates the fractions that we added in the LogUp columns using values in the range-check, lookup, and multiplicity columns.</p>
+<p>Once we add the fractions as constraints, we call the <code>finalize_logup_batched</code> function, which indicates how we want to batch the fractions. In our case, we added 3 fractions but want to create batches where the last two fractions are batched together, so we pass in <code>&amp;vec![0, 1, 1]</code>.</p>
+<pre><code class="language-rust ignore">    // Verify
+    assert_eq!(claimed_sum, SecureField::zero());
+
+    let channel = &amp;mut Blake2sChannel::default();
+    let commitment_scheme = &amp;mut CommitmentSchemeVerifier::&lt;Blake2sMerkleChannel&gt;::new(config);
+    let sizes = component.trace_log_degree_bounds();
+
+    commitment_scheme.commit(proof.commitments[0], &amp;sizes[0], channel);
+    channel.mix_u64(log_size as u64);
+    commitment_scheme.commit(proof.commitments[1], &amp;sizes[1], channel);
+    commitment_scheme.commit(proof.commitments[2], &amp;sizes[2], channel);
+
+    verify(&amp;[&amp;component], channel, commitment_scheme, proof).unwrap();</code></pre>
+<p>When we verify the proof, as promised, we check that the <code>claimed_sum</code>, which is the sum of the fractions in the LogUp columns, is 0.</p>
+<p>And that's it! We have successfully created a static lookup for a range-check.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="dynamic-lookups"><a class="header" href="#dynamic-lookups">Dynamic Lookups</a></h1>
+<p>In the last section, we implemented a static lookup. A dynamic lookup is the same as a static lookup except that the values that are being looked up are not known before the proving process (i.e. they are not preprocessed columns but trace columns).</p>
+<p>In this section, we will implement one of the simplest dynamic lookups: a permutation check.</p>
+<p>A permutation check simply checks that two sets of values have the same elements, but not necessarily in the same order. For example, the values <code>[1, 2, 3]</code> and <code>[3, 1, 2]</code> are a permutation of each other, but <code>[1, 2, 3]</code> and <code>[1, 2]</code> are not.</p>
+<p>If you went through the previous section, you should have a good intuition for how to implement this. First create two LogUp columns where the first column contains the values in the original set of values with multiplicity \(1\) and the second column contains the values in the second set of values with multiplicity \(-1\). Then, check that the <code>claimed_sum</code>, or the sum of the fractions in the two LogUp columns, is \(0\).</p>
+<p>We can optimize further by batching the two columns into a single LogUp column so that a LogUp column row looks something like \(\frac{1}{col_1} - \frac{1}{col_2}\).</p>
+<pre><code class="language-rust ignore">fn gen_trace(log_size: u32) -&gt; Vec&lt;CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt;&gt; {
+    // Create a table with values [0, 1 &lt;&lt; log_size)
+    let mut rng = rand::thread_rng();
+    let values = (0..(1 &lt;&lt; log_size)).map(|i| i).collect::&lt;Vec&lt;_&gt;&gt;();
+    let original_col = BaseColumn::from_iter(values.iter().map(|v| M31::from(*v)));
+
+    // Create a random permutation of the values
+    let mut permutation = values.clone();
+    permutation.shuffle(&amp;mut rng);
+    let permuted_col = BaseColumn::from_iter(permutation.iter().map(|v| M31::from(*v)));
+
+    // Convert table to trace polynomials
+    let domain = CanonicCoset::new(log_size).circle_domain();
+    vec![original_col, permuted_col]
+        .into_iter()
+        .map(|col| CircleEvaluation::new(domain, col))
+        .collect()
+}
+
+fn gen_logup_trace(
+    log_size: u32,
+    original_col: &amp;BaseColumn,
+    permuted_col: &amp;BaseColumn,
+    lookup_elements: &amp;LookupElements,
+) -&gt; (
+    Vec&lt;CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt;&gt;,
+    SecureField,
+) {
+    let mut logup_gen = LogupTraceGenerator::new(log_size);
+
+    let mut col_gen = logup_gen.new_col();
+    for row in 0..(1 &lt;&lt; (log_size - LOG_N_LANES)) {
+        // 1 / original - 1 / permuted = (permuted - original) / (original * permuted)
+        let original_val: PackedSecureField = lookup_elements.combine(&amp;[original_col.data[row]]);
+        let permuted_val: PackedSecureField = lookup_elements.combine(&amp;[permuted_col.data[row]]);
+        col_gen.write_frac(
+            row,
+            permuted_val - original_val,
+            original_val * permuted_val,
+        );
+    }
+    col_gen.finalize_col();
+
+    logup_gen.finalize_last()
+}
+
+fn main() {
+    ...
+    // Create and commit to the trace columns
+    let trace = gen_trace(log_size);
+    let mut tree_builder = commitment_scheme.tree_builder();
+    tree_builder.extend_evals(trace.clone());
+    tree_builder.commit(channel);
+
+    // Draw random elements to use when creating the random linear combination of lookup values in the LogUp columns
+    let lookup_elements = LookupElements::draw(channel);
+
+    // Create and commit to the LogUp columns
+    let (logup_cols, claimed_sum) =
+        gen_logup_trace(log_size, &amp;trace[0], &amp;trace[1], &amp;lookup_elements);
+    let mut tree_builder = commitment_scheme.tree_builder();
+    tree_builder.extend_evals(logup_cols);
+    tree_builder.commit(channel);
+    ...
+}</code></pre>
+<p>Looking at the code above, we can see that it looks very similar to the implementation in the previous section. Instead of creating a preprocessed column, we create a trace column that contains the values <code>[0, 1 &lt;&lt; log_size)</code> in order. Then, we create a random permutation of the trace column values and set it as the second trace column. Note that this is equivalent to "looking up" all values in the first trace column once. And since all the values are looked up only once, we do not need a separate multiplicity column.</p>
+<p>Then, we create a LogUp column that contains the values \(\frac{1}{original} - \frac{1}{permuted}\).</p>
+<pre><code class="language-rust ignore">struct TestEval {
+    log_size: u32,
+    lookup_elements: LookupElements,
+}
+
+impl FrameworkEval for TestEval {
+    fn log_size(&amp;self) -&gt; u32 {
+        self.log_size
+    }
+
+    fn max_constraint_log_degree_bound(&amp;self) -&gt; u32 {
+        self.log_size + CONSTRAINT_EVAL_BLOWUP_FACTOR
+    }
+
+    fn evaluate&lt;E: EvalAtRow&gt;(&amp;self, mut eval: E) -&gt; E {
+        let original_col = eval.next_trace_mask();
+        let permuted_col = eval.next_trace_mask();
+
+        eval.add_to_relation(RelationEntry::new(
+            &amp;self.lookup_elements,
+            E::EF::one(),
+            &amp;[original_col],
+        ));
+
+        eval.add_to_relation(RelationEntry::new(
+            &amp;self.lookup_elements,
+            -E::EF::one(),
+            &amp;[permuted_col],
+        ));
+
+        eval.finalize_logup_in_pairs();
+
+        eval
+    }
+}</code></pre>
+<p>The <code>TestEval</code> struct is also very similar to the one in the previous section. The only difference is that we call <code>add_to_relation</code> twice and add them together by calling <code>finalize_logup_in_pairs()</code> on the <code>TestEval</code> instance. This is equivalent to calling the <code>finalize_logup_batched</code> function with <code>&amp;vec![0, 0]</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="local-row-constraints"><a class="header" href="#local-row-constraints">Local Row Constraints</a></h1>
+<pre><code class="language-admonish info">1. Change the order of elements in `BaseColumn` in-place via `bit_reverse_coset_to_circle_domain_order` before creating a `CircleEvaluation` instance.
+2. The previous row in the first row will point to the last row, so you may need to disable the constraint for the first row.
+</code></pre>
+<p>Until now, we have only considered constraints that apply over values in a single row. But what if we want to express constraints over multiple rows? For example, we may want to ensure that the difference between the values in two adjacent rows is always the same.</p>
+<p>Turns out we can implement this as an AIR constraint, as long as the same constraints are applied to all rows. However, actually implementing this requires some background knowledge about</p>
+<p>In this section, we will see how to implement this.</p>
+<p>We will build upon the example in the previous section, where we created a two columns and proved that they are permutations of each other by asserting that the second column looks up all values in the first column exactly once.</p>
+<p>In this section, we will create two columns and prove that not only are they permutations of each other, but also that the second row is a sorted version of the first row.</p>
+<p>More specifically, the sorted column will contain in order the values \([0,num\_rows)\), which means that the difference between every current row and the previous row should be \(1\).</p>
+<p>We will go through three iterations, fixing an issue in each iteration.</p>
+<h2 id="first-try"><a class="header" href="#first-try">First Try</a></h2>
+<pre><code class="language-rust ignore">    fn evaluate&lt;E: EvalAtRow&gt;(&amp;self, mut eval: E) -&gt; E {
+        let unsorted_col = eval.next_trace_mask();
+        let [sorted_col_prev_row, sorted_col_curr_row] =
+            eval.next_interaction_mask(ORIGINAL_TRACE_IDX, [-1, 0]);
+
+        // New constraint
+        eval.add_constraint(
+            E::F::one() - (sorted_col_curr_row.clone() - sorted_col_prev_row.clone()),
+        );
+
+        eval.add_to_relation(RelationEntry::new(
+            &amp;self.lookup_elements,
+            E::EF::one(),
+            &amp;[unsorted_col],
+        ));
+
+        eval.add_to_relation(RelationEntry::new(
+            &amp;self.lookup_elements,
+            -E::EF::one(),
+            &amp;[sorted_col_curr_row],
+        ));
+
+        eval.finalize_logup_in_pairs();
+
+        eval
+    }</code></pre>
+<p>Basically, the same logic for creating the trace and LogUp columns are equal to the previous section, so we omit them for brevity.</p>
+<p>What does change is the <code>evaluate</code> function, where we call <code>next_interaction_mask</code> on the <code>EvalAtRow</code> instance. This function can retrieve values from arbitrary row offsets, which means we can access the previous row value using <code>-1</code>. Since we call this function with offsets <code>[-1, 0]</code>, we will retrieve the values for the previous and current rows.</p>
+<p>Once we have these values, we can now assert that the difference between the current and previous row is always <code>1</code> with the constraint: <code>E::F::one() - (sorted_col_curr_row.clone() - sorted_col_prev_row.clone())</code>.</p>
+<p>But this will fail with a <code>ConstraintsNotSatisfied</code> error, can you see why? (You can try running it yourself <a href="https://github.com/zksecurity/stwo-book/blob/main/stwo-examples/examples/local_row_constraints_fails_1.rs">here</a>)</p>
+<h2 id="second-try"><a class="header" href="#second-try">Second Try</a></h2>
+<p>The issue was that when calling <code>evaluate</code> on the first row of our trace, the previous row value wraps around to the last row because there are no negative indices.</p>
+<p>This means that in our example, we are expecting the <code>0 - 15 = 1</code> constraint to hold, which is clearly not true.</p>
+<p>To fix this, we can use the <code>IsFirstColumn</code> preprocessed column that we created in the <a href="air-development/local-row-constraints/../preprocessed-trace/index.html">Preprocessed Trace</a> section. So we will copy over the same code for creating the preprocessed column and modify our new constraint as follows:</p>
+<pre><code class="language-rust ignore">        let is_first_col = eval.get_preprocessed_column(self.is_first_id.clone());
+
+        eval.add_constraint(
+            (E::F::one() - is_first_col.clone())
+                * (E::F::one() - (sorted_col_curr_row.clone() - sorted_col_prev_row.clone())),
+        );</code></pre>
+<p>Now, we have a constraint that is disabled for the first row, which is exactly what we want.</p>
+<p>Still, however, this will fail with the same <code>ConstraintsNotSatisfied</code> error. (You can run it <a href="https://github.com/zksecurity/stwo-book/blob/main/stwo-examples/examples/local_row_constraints_fails_2.rs">here</a>)</p>
+<h2 id="third-try"><a class="header" href="#third-try">Third Try</a></h2>
+<p>So when we were creating <code>CircleEvaluation</code> instances from our <code>BaseColumn</code> instances, the order of the elements that we were creating it with was actually not the order that Stwo understands it to be. Instead, it assumes that the values are in the bit-reversed, circle domain order. It's not important to understand what this order is, specifically, but this does mean that when Stwo tries to find the <code>-1</code> offset when calling <code>evaluate</code>, it will find the previous value assuming that it's in a different order. This means that when we create a <code>CircleEvaluation</code> instance, we need to make sure that the values are in the order that Stwo expects.</p>
+<p>Thus, every time we create a <code>CircleEvaluation</code> instance, we need to convert the order of the values in the <code>BaseColumn</code> beforehand.</p>
+<pre><code class="language-rust ignore">impl IsFirstColumn {
+    ...
+    pub fn gen_column(&amp;self) -&gt; CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt; {
+        let mut col = BaseColumn::zeros(1 &lt;&lt; self.log_size);
+        col.set(0, M31::from(1));
+
+        //////////////////////////////////////////////////////////////
+        // Convert the columns to bit-reversed circle domain order
+        bit_reverse_coset_to_circle_domain_order(col.as_mut_slice());
+        //////////////////////////////////////////////////////////////
+
+        CircleEvaluation::new(CanonicCoset::new(self.log_size).circle_domain(), col)
+    }
+    ...
+}
+
+fn gen_trace(log_size: u32) -&gt; Vec&lt;CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt;&gt; {
+    // Create a table with random values
+    let mut rng = rand::thread_rng();
+    let sorted_values = (0..(1 &lt;&lt; log_size)).map(|i| i).collect::&lt;Vec&lt;_&gt;&gt;();
+    let mut unsorted_values = sorted_values.clone();
+    unsorted_values.shuffle(&amp;mut rng);
+
+    let mut unsorted_col = BaseColumn::from_iter(unsorted_values.iter().map(|v| M31::from(*v)));
+    let mut sorted_col = BaseColumn::from_iter(sorted_values.iter().map(|v| M31::from(*v)));
+
+    // Convert table to trace polynomials
+    let domain = CanonicCoset::new(log_size).circle_domain();
+
+    ////////////////////////////////////////////////////////////////////
+    // Convert the columns to bit-reversed circle domain order
+    bit_reverse_coset_to_circle_domain_order(unsorted_col.as_mut_slice());
+    bit_reverse_coset_to_circle_domain_order(sorted_col.as_mut_slice());
+    ////////////////////////////////////////////////////////////////////
+
+    vec![unsorted_col, sorted_col]
+        .into_iter()
+        .map(|col| CircleEvaluation::new(domain, col))
+        .collect()
+}</code></pre>
+<p>And voilà, we have successfully implemented the constraint. You can run it <a href="https://github.com/zksecurity/stwo-book/blob/main/stwo-examples/examples/local_row_constraints.rs">here</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="components"><a class="header" href="#components">Components</a></h1>
+<p>So now that we know how to create a self-contained AIR, the inevitable question arises: How do we make this modular?</p>
+<p>Fortunately, Stwo provides an abstraction called a <strong>component</strong> that allows us to create independent AIRs and compose them together. In other proving frontends, this is also commonly referred to as a <em>chip</em>, but the idea is the same.</p>
+<p>One of the most common use cases of components is to separate frequently used functions (e.g. a hash function) from the main component into a separate component and reuse it, avoiding trace column bloat. Even if the function is not frequently used, it could be useful to separate it into a component to avoid the degree of the constraints becoming too high. This second point is possible because when we create a new component and connect it to the old component, we do it by using lookups, which means that the constraints of the new component are not added to the degree of the old component.</p>
+<h2 id="example"><a class="header" href="#example">Example</a></h2>
+<p>To illustrate how to use components, we will create two components where the main component calls a hash function component. For simplicity, instead of an actual hash function, the second component will compute \(x^5 + 1\) from an input \(x\). This component will have in total three columns: [input, intermediate, output], which will correspond to the values \([x, x^3, x^5 + 1]\). Our main component, on the other hand, will have two columns, [input, output], which corresponds to the values \([x, x^5 + 1]\).</p>
+<p>We'll now refer to the main component as the <strong>scheduling component</strong> and the hash function component the <strong>computing component</strong>, as the main component is essentially <em>scheduling</em> the hash function component to run its function with a given input and the hash function component <em>computes</em> on the provided input. As can be seen in <a href="air-development/components/index.html#fig-component-example">Figure 1</a>, the inputs and outputs of each component are connected by lookups.</p>
+<figure id="fig-component-example" style="text-align: center;">
+    <img src="air-development/components/./component-example.png" width="100%" />
+    <figcaption><center><span style="font-size: 0.9em">Figure 1: Scheduling and Computing components</span></center></figcaption>
+</figure>
+<h3 id="design"><a class="header" href="#design">Design</a></h3>
+<figure id="fig-component-trace" style="text-align: center;">
+    <img src="air-development/components/./component-trace.png" width="100%" />
+    <figcaption><center><span style="font-size: 0.9em">Figure 2: Traces of each component</span></center></figcaption>
+</figure>
+<p>When we implement this in Stwo, the traces of each component will look like <a href="air-development/components/index.html#fig-component-trace">Figure 2</a> above. Each component has its own original and LogUp traces, and the inputs and outputs of each component are connected by lookups. Since the scheduling component adds the inputs as positive values and the outputs as negative values, while the computing component adds the inputs as negative values and the outputs as positive values, the verifier can simply check that the sum of the two LogUp columns is zero.</p>
+<h2 id="code-1"><a class="header" href="#code-1">Code</a></h2>
+<pre><code class="language-rust ignore">fn main() {
+    // --snip--
+
+    // Create trace columns
+    let scheduling_trace = gen_scheduling_trace(log_size);
+    let computing_trace = gen_computing_trace(log_size, &amp;scheduling_trace[0], &amp;scheduling_trace[1]);
+
+    // Statement 0
+    let statement0 = ComponentsStatement0 { log_size };
+    statement0.mix_into(channel);
+
+    // Commit to the trace columns
+    let mut tree_builder = commitment_scheme.tree_builder();
+    tree_builder.extend_evals([scheduling_trace.clone(), computing_trace.clone()].concat());
+    tree_builder.commit(channel);
+
+    // Draw random elements to use when creating the random linear combination of lookup values in the LogUp columns
+    let lookup_elements = ComputationLookupElements::draw(channel);
+
+    // Create LogUp columns
+    let (scheduling_logup_cols, scheduling_claimed_sum) = gen_scheduling_logup_trace(
+        log_size,
+        &amp;scheduling_trace[0],
+        &amp;scheduling_trace[1],
+        &amp;lookup_elements,
+    );
+    let (computing_logup_cols, computing_claimed_sum) = gen_computing_logup_trace(
+        log_size,
+        &amp;computing_trace[0],
+        &amp;computing_trace[2],
+        &amp;lookup_elements,
+    );
+
+    // Statement 1
+    let statement1 = ComponentsStatement1 {
+        scheduling_claimed_sum,
+        computing_claimed_sum,
+    };
+    statement1.mix_into(channel);
+
+    // Commit to the LogUp columns
+    let mut tree_builder = commitment_scheme.tree_builder();
+    tree_builder.extend_evals([scheduling_logup_cols, computing_logup_cols].concat());
+    tree_builder.commit(channel);
+
+    let components = Components::new(&amp;statement0, &amp;lookup_elements, &amp;statement1);
+
+    let stark_proof = prove(&amp;components.component_provers(), channel, commitment_scheme).unwrap();
+
+    let proof = ComponentsProof {
+        statement0,
+        statement1,
+        stark_proof,
+    };
+
+    // --snip--
+}</code></pre>
+<p>The code above for proving the components should look pretty familiar by now. Since we need to do everything twice the amount of times, we create structs like <code>ComponentsStatement0</code>, <code>ComponentsStatement1</code>, <code>Components</code> and <code>ComponentsProof</code>, but the main logic is the same.</p>
+<p>Let's take a closer look at how the LogUp columns are generated.</p>
+<pre><code class="language-rust ignore">fn gen_scheduling_logup_trace(
+    log_size: u32,
+    scheduling_col_1: &amp;CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt;,
+    scheduling_col_2: &amp;CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt;,
+    lookup_elements: &amp;ComputationLookupElements,
+) -&gt; (
+    Vec&lt;CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt;&gt;,
+    SecureField,
+) {
+        // --snip--
+
+        let scheduling_input: PackedSecureField =
+            lookup_elements.combine(&amp;[scheduling_col_1.data[row]]);
+        let scheduling_output: PackedSecureField =
+            lookup_elements.combine(&amp;[scheduling_col_2.data[row]]);
+        col_gen.write_frac(
+            row,
+            scheduling_output - scheduling_input,
+            scheduling_input * scheduling_output,
+        );
+
+        // --snip--
+
+
+fn gen_computing_logup_trace(
+    log_size: u32,
+    computing_col_1: &amp;CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt;,
+    computing_col_3: &amp;CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt;,
+    lookup_elements: &amp;ComputationLookupElements,
+) -&gt; (
+    Vec&lt;CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt;&gt;,
+    SecureField,
+) {
+        // --snip--
+
+        let computing_input: PackedSecureField =
+            lookup_elements.combine(&amp;[computing_col_1.data[row]]);
+        let computing_output: PackedSecureField =
+            lookup_elements.combine(&amp;[computing_col_3.data[row]]);
+        col_gen.write_frac(
+            row,
+            computing_input - computing_output,
+            computing_input * computing_output,
+        );
+
+        // --snip--
+}</code></pre>
+<p>As you can see, the LogUp values of the input and output columns of both the scheduling and computing components are batched together, but in the scheduling component, the output LogUp value is subtracted from the input LogUp value, while in the computing component, the input LogUp value is subtracted from the output LogUp value. This means that when the LogUp sums from both components are added together, they should cancel out and equal zero.</p>
+<p>Next, let's check how the constraints are created.</p>
+<pre><code class="language-rust ignore">impl FrameworkEval for SchedulingEval {
+    // --snip--
+
+    fn evaluate&lt;E: EvalAtRow&gt;(&amp;self, mut eval: E) -&gt; E {
+        let input_col = eval.next_trace_mask();
+        let output_col = eval.next_trace_mask();
+
+        eval.add_to_relation(RelationEntry::new(
+            &amp;self.lookup_elements,
+            E::EF::one(),
+            &amp;[input_col],
+        ));
+
+        eval.add_to_relation(RelationEntry::new(
+            &amp;self.lookup_elements,
+            -E::EF::one(),
+            &amp;[output_col],
+        ));
+
+        eval.finalize_logup_in_pairs();
+
+        eval
+    }
+}
+
+impl FrameworkEval for ComputingEval {
+    // --snip--
+
+    fn evaluate&lt;E: EvalAtRow&gt;(&amp;self, mut eval: E) -&gt; E {
+        let input_col = eval.next_trace_mask();
+        let intermediate_col = eval.next_trace_mask();
+        let output_col = eval.next_trace_mask();
+
+        eval.add_constraint(
+            intermediate_col.clone() - input_col.clone() * input_col.clone() * input_col.clone(),
+        );
+        eval.add_constraint(
+            output_col.clone()
+                - intermediate_col.clone() * input_col.clone() * input_col.clone()
+                - E::F::one(),
+        );
+
+        eval.add_to_relation(RelationEntry::new(
+            &amp;self.lookup_elements,
+            -E::EF::one(),
+            &amp;[input_col],
+        ));
+
+        eval.add_to_relation(RelationEntry::new(
+            &amp;self.lookup_elements,
+            E::EF::one(),
+            &amp;[output_col],
+        ));
+
+        eval.finalize_logup_in_pairs();
+
+        eval
+    }
+}</code></pre>
+<p>As you can see, we define the LogUp constraints for each component, and we also add two constraints that make sure the computations \(x^3\) and \(x^5 + 1\) are correct.</p>
+<pre><code class="language-rust ignore">fn main() {
+    // --snip--
+
+    // Verify claimed sums
+    assert_eq!(
+        scheduling_claimed_sum + computing_claimed_sum,
+        SecureField::zero()
+    );
+
+    // Unpack proof
+    let statement0 = proof.statement0;
+    let statement1 = proof.statement1;
+    let stark_proof = proof.stark_proof;
+
+    // Create channel and commitment scheme
+    let channel = &amp;mut Blake2sChannel::default();
+    let commitment_scheme = &amp;mut CommitmentSchemeVerifier::&lt;Blake2sMerkleChannel&gt;::new(config);
+    let log_sizes = statement0.log_sizes();
+
+    // Preprocessed columns.
+    commitment_scheme.commit(stark_proof.commitments[0], &amp;log_sizes[0], channel);
+
+    // Commit to statement 0
+    statement0.mix_into(channel);
+
+    // Trace columns.
+    commitment_scheme.commit(stark_proof.commitments[1], &amp;log_sizes[1], channel);
+
+    // Draw lookup element.
+    let lookup_elements = ComputationLookupElements::draw(channel);
+
+    // Commit to statement 1
+    statement1.mix_into(channel);
+
+    // Interaction columns.
+    commitment_scheme.commit(stark_proof.commitments[2], &amp;log_sizes[2], channel);
+
+    // Create components
+    let components = Components::new(&amp;statement0, &amp;lookup_elements, &amp;statement1);
+
+    verify(
+        &amp;components.components(),
+        channel,
+        commitment_scheme,
+        stark_proof,
+    )
+    .unwrap();</code></pre>
+<p>Finally, we verify the components!</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="additional-examples"><a class="header" href="#additional-examples">Additional Examples</a></h1>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Example</th><th style="text-align: left">Preprocessed Columns</th><th style="text-align: left">Trace Columns</th><th style="text-align: left">LogUp Columns</th></tr></thead><tbody>
+<tr><td style="text-align: left"><strong>Permutation argument check</strong></td><td style="text-align: left"></td><td style="text-align: left">- unordered list<br>- ordered list</td><td style="text-align: left">1 / unordered list - 1 / ordered list</td></tr>
+<tr><td style="text-align: left"><strong>Range Check (0 &lt;= a &lt; 2^bits)</strong></td><td style="text-align: left">[0,2^bits) rows</td><td style="text-align: left">- lookup columns<br>- multiplicities column</td><td style="text-align: left">- 1 / lookup<br>- multiplicity / preprocessed</td></tr>
+<tr><td style="text-align: left"><strong>Comparator check (a &gt; b)</strong></td><td style="text-align: left">[0,2^bits) rows</td><td style="text-align: left">- a <br> - b <br> - multiplicities column</td><td style="text-align: left">- 1 / (a - b) <br> - multiplicity / preprocessed</td></tr>
+<tr><td style="text-align: left"><strong>IsZero check (a == 0)</strong></td><td style="text-align: left"></td><td style="text-align: left">- a <br> - a_inv</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left"><strong>XOR operations</strong></td><td style="text-align: left">valid XOR operations</td><td style="text-align: left">- lookup columns<br>- multiplicities column</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left"><strong>Selectors</strong></td><td style="text-align: left">columns of 0s and 1s</td><td style="text-align: left"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left"><strong>Checking whether current row is first row or not</strong></td><td style="text-align: left">single column (first row = 1, other rows = 0)</td><td style="text-align: left"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left"><strong>Connecting multiple components</strong> (output of Component A is input of Component B)</td><td style="text-align: left"></td><td style="text-align: left"></td><td style="text-align: left">- 1 / output <br> - 1 / input * (-1)</td></tr>
+<tr><td style="text-align: left"><strong>Public Input/Output</strong></td><td style="text-align: left"></td><td style="text-align: left"></td><td style="text-align: left">1 / input + 1 / output</td></tr>
+</tbody></table>
+</div>
+<p>Above is a list of additional examples that you can implement as an AIR using Stwo, some of which we have already implemented in the previous sections.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="cairo-as-a-stwo-air"><a class="header" href="#cairo-as-a-stwo-air">Cairo as a Stwo AIR</a></h1>
+<p>🚧</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="how-does-it-work"><a class="header" href="#how-does-it-work">How Does It Work?</a></h1>
+<blockquote>
+<p>This section is for those who want an in-depth explanation of various components of Stwo.</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="mersenne-primes"><a class="header" href="#mersenne-primes">Mersenne Primes</a></h1>
+<p>Proof systems typically rely on finite field operations, where efficient field arithmetic is crucial for optimizing proof generation. In STARK protocols, there is no direct dependency between the security level of the proof system and the field size. This allows the use of small fields with highly efficient arithmetic, such as Mersenne prime fields.</p>
+<p>A Mersenne prime is defined as a prime number that is one less than a power of two, expressed as \( p = 2^k -1 \).</p>
+<p>Consider the Mersenne prime field \( \mathbb{F}_p \) where \( p = 2^{31} - 1 \). Our objective is to perform field multiplication \( a \cdot b \), where \( a, b \in \mathbb{F}_p \). This operation involves a 31-bit integer multiplication, producing a 62-bit intermediate result, which is then reduced modulo \( p \).</p>
+<p>Let \( x = a \cdot b \), where \( a, b \) are 31-bit values, resulting in a 62-bit product \( x \). We can decompose \( x \) into two 31-bit values \( b \) and \( s \), such that \( x = 2^{31} \cdot b + s \), as shown in the following figure.</p>
+<div style="text-align: center;">
+    <img src="how-it-works/./mersenne-mult.svg" alt="Mersenne Prime Multiplication" width="400px">
+</div>
+<p>To perform modular reduction, we start with:
+\[ x \equiv (2^{31} \cdot b + s) \quad mod \quad (2^{31} - 1) \]
+Substituting \( 2^{31} \equiv 1 \mod (2^{31} - 1) \) gives:
+\[ x \equiv (b + s) \quad mod \quad (2^{31} - 1) \]</p>
+<p>Since \( b \) and \( s \) are both 31-bit values, they can be directly represented as field elements. Consequently, modular reduction is performed with a single field addition. This makes arithmetic over Mersenne primes exceptionally fast, making them an ideal choice for our STARK protocol.</p>
+<p>However, we instantiate STARK protocols over an FFT-friendly field, meaning a field that contains a multiplicative subgroup of order that is a large power of two (commonly referred to as a smooth subgroup).</p>
+<p>\[ |\mathbb{F}_p^*| = p-1 = 2^k-2\]</p>
+<p>As shown above, Mersenne prime fields lack a smooth subgroup of size that is a large power of two because there is no large power of two that divides \( |\mathbb{F}_{p}^*| \). In other words, there does not exist a sufficiently large \( n \) such that \( 2^n \, | \, p - 1 \).</p>
+<h1 id="extensions-of-mersenne-prime-field"><a class="header" href="#extensions-of-mersenne-prime-field">Extensions of Mersenne Prime Field</a></h1>
+<p>To make Mersenne prime fields compatible with STARKs, we use a degree-2 extension of \( \mathbb{F}_p \), defined as follows:</p>
+<p>\[ \mathbb{F}_{p^2} = \mathbb{F}_p[X]/(X^2 + 1) \]</p>
+<p>This extension forms a field of size \( p^2 \), where elements can be represented as \( (a, b) \) or
+\[ a + i \cdot b \]
+where \( a, b \in \mathbb{F}_p \) and \( i \) is the root of the polynomial \( X^2 + 1 \) i.e. \( i^2 + 1 = 0\).</p>
+<p>The order of the multiplicative group of this extended field is calculated as follows:</p>
+<p>\[ |\mathbb{F}_{p^2}^*|  = p^2 - 1 = (p-1) \cdot (p+1)\]</p>
+<p>For Mersenne primes of the form \( p = 2^k - 1 \), this becomes:</p>
+<p>\[ |\mathbb{F}_{p^2}^*| = (2^k-2) \cdot (2^k)\]</p>
+<p>As shown above, \( 2^k \, | \, |\mathbb{F}_{p^2}^*| \) i.e. \( \mathbb{F}_{p^2}^* \) contains a subgroup of size that is a large power of two. This makes it suitable for instantiating STARKs. This subgroup is what we refer to as the Circle group (explored further in the next section).</p>
+<h2 id="secure-field"><a class="header" href="#secure-field">Secure Field</a></h2>
+<p>For the soundness of the protocol, it is crucial that the verifier samples random challenges from a sufficiently large field to ensure that an adversary cannot guess or brute-force the challenges and generate a proof that passes verification without knowledge of the witness.</p>
+<p>If we use \( p = 2^{31} -1 \), then 31-bit random challenges are not sufficient to maintain the security of the protocol. To address this, the verifier draws random challenges from a degree-4 extension of \( \mathbb{F}_{p} \), which is equivalent to degree-2 extension of \( \mathbb{F}_{p^2} \), denoted as
+\[ \mathbb{F}_{p^4} = \mathbb{F}_{p^2}[X]/(X^2 - 2 - i) \]</p>
+<p>The elements of \( \mathbb{F}_{p^4} \) can be represented as \( (r, s) \) or
+\[ r + u \cdot s \]
+where \( r, s \in \mathbb{F}_{p^2} \) and \( u \) is the root of the polynomial \( X^2 - 2 - i \) i.e. \( u^2 - 2 - i = 0\).</p>
+<p>Alternatively, the elements of \( \mathbb{F}_{p^4} \) can also be represented as four elements of \( \mathbb{F}_{p} \) i.e. \( ((a, b), (c, d)) \) or
+\[ (a + i \cdot b) + (c + i \cdot d) \cdot u \]</p>
+<p>where \( a, b, c, d \in \mathbb{F}_p \). With four elements from \( \mathbb{F}_{p} \), the challenge space consists of 124-bit values, offering a sufficiently large \( 2^{124} \) possibilities to sample a random challenge.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="lookups"><a class="header" href="#lookups">Lookups</a></h1>
+<p>Lookups are simply a way to connect one part of the table to another. When we "look up" a value, we are doing nothing more than creating a constraint that allows us to use that value in another part of the table without breaking soundness.</p>
+<h2 id="design-1"><a class="header" href="#design-1">Design</a></h2>
+<p>We will walk through four steps to incrementally build up the design of lookups.</p>
+<h3 id="step-1-suppose-we-want-to-have-two-columns-with-the-same-values"><a class="header" href="#step-1-suppose-we-want-to-have-two-columns-with-the-same-values">Step 1: Suppose we want to have two columns with the same values.</a></h3>
+<p>We can do this by creating two columns with the exact same values and adding a constraint over them: <code>col_1 - col_2 = 0</code>.</p>
+<h3 id="step-2-we-want-to-check-that-the-two-columns-have-the-same-values-but-in-a-different-order"><a class="header" href="#step-2-we-want-to-check-that-the-two-columns-have-the-same-values-but-in-a-different-order">Step 2: We want to check that the two columns have the same values but in a different order.</a></h3>
+<p>We can use the idea that two sets of values will have the same cumulative product if they are indeed permutations of each other. So we add new columns, <code>col_1_cumprod</code> for <code>col_1</code> and <code>col_2_cumprod</code> for <code>col_2</code>, which contain the running cumulative product of <code>col_1</code> and <code>col_2</code>, respectively. The new constraints will check that each of these new columns do indeed contain the cumulative product values and that their last values are the same. We can optimize this by creating just one new column that keeps a running cumulative product of the fraction <code>col_1 / col_2</code>.</p>
+<h3 id="step-3-we-want-to-check-that-all-values-in-col_2-are-in-col_1-but-each-value-appears-an-arbitrary-number-of-times"><a class="header" href="#step-3-we-want-to-check-that-all-values-in-col_2-are-in-col_1-but-each-value-appears-an-arbitrary-number-of-times">Step 3: We want to check that all values in <code>col_2</code> are in <code>col_1</code>, but each value appears an arbitrary number of times.</a></h3>
+<p><em>(Note that this is a generalization of the second step in that for the second step,all values in <code>col_2</code> appear exactly once in <code>col_1</code>)</em></p>
+<p>Supporting this third step is actually pretty simple: when creating the running cumulative product, we need to raise each value in <code>col_1</code> to its multiplicity, or the number of times it appears in <code>col_2</code>. The rest of the constraints do not need to be changed.</p>
+<h3 id="step-4-we-want-to-check-that-all-values-in-col_2-col_3--are-in-col_1-with-arbitrary-multiplicities"><a class="header" href="#step-4-we-want-to-check-that-all-values-in-col_2-col_3--are-in-col_1-with-arbitrary-multiplicities">Step 4: We want to check that all values in <code>[col_2, col_3, ...]</code> are in <code>col_1</code> with arbitrary multiplicities</a></h3>
+<p>Finally, we want to create many more columns that contain values from <code>col_1</code>. Fortunately,</p>
+<p>To support this, we can use the same idea as the third step: when creating the running cumulative product, we need to raise each value in <code>col_1</code> to the power of the number of times it appears in <code>[col_2, col_3, ...]</code>.</p>
+<pre><code class="language-admonish">In summary, lookups support the following use-cases:
+
+1. Prove equality: we want to prove that the values of the first column are equal to the values of the second column.
+2. Prove permutation: we want to prove that the values of the first column are a permutation of the values of the second column.
+3. Prove permutation with multiplicities: we want to prove that each value of the first column appears a certain number of times over multiple columns.
+
+</code></pre>
+<h2 id="technique-logup"><a class="header" href="#technique-logup">Technique: LogUp</a></h2>
+<p>LogUp is a technique used to constrain lookups. It's a successor to <a href="https://eprint.iacr.org/2020/315">Plookup</a>, and is especially useful for proving permutation with multiplicities. Here, we'll briefly explain why this is the case.</p>
+<p>Plookup and its variants use a technique called the Grand Product Check to prove permutation.</p>
+<p>$$
+\prod_{i=0}^{n-1} (X - a_i) = \prod_{i=0}^{n-1} (X - b_i)
+$$</p>
+<p>In the equation above, we can check that the set ${a_0,...,a_{n-1}}$ is a permutation of the set ${b_0,...,b_{n-1}}$ by setting $X$ to a random value provided by the verifier.</p>
+<p>However, this becomes inefficient when we have multiplicities since we need to encode the multiplicities as powers of each lookup polynomial, and thus the degree of the polynomial increases linearly with the number of multiplicities.</p>
+<p>$$
+\prod_{i=0}^{n-1} (X - a_i) = \prod_{i=0}^{n-1} (X - b_i)^{m_i}
+$$</p>
+<p>On the other hand, LogUp uses the derivative of the Grand Product Check:</p>
+<p>$$
+\sum_{i=0}^{n-1} \frac{1}{X - a_i} = \sum_{i=0}^{n-1} \frac{m_i}{X - b_i}
+$$</p>
+<p>In this approach, each lookup polynomial is represented as a rational function with the multiplicity as the numerator. This transformation is significant because the degree of the polynomial remains constant regardless of the number of multiplicities, making LogUp more efficient for handling multiple lookups of the same value.</p>
+<h2 id="implementation"><a class="header" href="#implementation">Implementation</a></h2>
+<p>The following figures show the implementation of lookups in Stwo that looks up values from a preprocessed trace and constraining them using the LogUp technique.</p>
+<figure id="fig-lookup-implementation" style="text-align: center;">
+    <img src="how-it-works/./lookups-1.png" width="80%" />
+    <figcaption><center><span style="font-size: 0.9em">Figure 1: Create trace columns that look up values from a preprocessed trace</span></center></figcaption>
+</figure>
+<figure id="fig-lookup-implementation" style="text-align: center;">
+    <img src="how-it-works/./lookups-2.png" width="90%" />
+    <figcaption><center><span style="font-size: 0.9em">Figure 2: Add a multiplicity column</span></center></figcaption>
+</figure>
+<figure id="fig-lookup-implementation" style="text-align: center;">
+    <img src="how-it-works/./lookups-3.png" width="100%" />
+    <figcaption><center><span style="font-size: 0.9em">Figure 3: Create LogUp columns</span></center></figcaption>
+</figure>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="users-of-stwo"><a class="header" href="#users-of-stwo">Users of Stwo</a></h1>
+<p>This is a non-exhaustive list of projects and organizations that are currently using or planning to use Stwo. If you are using Stwo and would like to be added to this list, please <a href="https://github.com/zksecurity/stwo-book/issues/new">open an issue</a> or <a href="https://github.com/zksecurity/stwo-book/pulls">submit a PR</a>.</p>
+<h2 id="projects"><a class="header" href="#projects">Projects</a></h2>
+<ul>
+<li><a href="https://github.com/starkware-libs/stwo-cairo">Stwo Cairo</a></li>
+<li><a href="https://github.com/nexus-xyz/nexus-zkvm">Nexus zkVM</a></li>
+<li><a href="https://github.com/gizatechxyz/LuminAIR">Giza LuminAIR</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            MathJax.Hub.Register.StartupHook('End', function() {
+                window.setTimeout(window.print, 100);
+            });
+        });
+        </script>
+
+    </div>
+    </body>
+</html>

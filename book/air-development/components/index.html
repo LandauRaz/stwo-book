@@ -1,0 +1,474 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Components - stwo-book</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../.././mdbook-admonish.css">
+        <link rel="stylesheet" href="../.././mdbook-admonish-custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">stwo-book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="components"><a class="header" href="#components">Components</a></h1>
+<p>So now that we know how to create a self-contained AIR, the inevitable question arises: How do we make this modular?</p>
+<p>Fortunately, Stwo provides an abstraction called a <strong>component</strong> that allows us to create independent AIRs and compose them together. In other proving frontends, this is also commonly referred to as a <em>chip</em>, but the idea is the same.</p>
+<p>One of the most common use cases of components is to separate frequently used functions (e.g. a hash function) from the main component into a separate component and reuse it, avoiding trace column bloat. Even if the function is not frequently used, it could be useful to separate it into a component to avoid the degree of the constraints becoming too high. This second point is possible because when we create a new component and connect it to the old component, we do it by using lookups, which means that the constraints of the new component are not added to the degree of the old component.</p>
+<h2 id="example"><a class="header" href="#example">Example</a></h2>
+<p>To illustrate how to use components, we will create two components where the main component calls a hash function component. For simplicity, instead of an actual hash function, the second component will compute \(x^5 + 1\) from an input \(x\). This component will have in total three columns: [input, intermediate, output], which will correspond to the values \([x, x^3, x^5 + 1]\). Our main component, on the other hand, will have two columns, [input, output], which corresponds to the values \([x, x^5 + 1]\).</p>
+<p>We'll now refer to the main component as the <strong>scheduling component</strong> and the hash function component the <strong>computing component</strong>, as the main component is essentially <em>scheduling</em> the hash function component to run its function with a given input and the hash function component <em>computes</em> on the provided input. As can be seen in <a href="#fig-component-example">Figure 1</a>, the inputs and outputs of each component are connected by lookups.</p>
+<figure id="fig-component-example" style="text-align: center;">
+    <img src="./component-example.png" width="100%" />
+    <figcaption><center><span style="font-size: 0.9em">Figure 1: Scheduling and Computing components</span></center></figcaption>
+</figure>
+<h3 id="design"><a class="header" href="#design">Design</a></h3>
+<figure id="fig-component-trace" style="text-align: center;">
+    <img src="./component-trace.png" width="100%" />
+    <figcaption><center><span style="font-size: 0.9em">Figure 2: Traces of each component</span></center></figcaption>
+</figure>
+<p>When we implement this in Stwo, the traces of each component will look like <a href="#fig-component-trace">Figure 2</a> above. Each component has its own original and LogUp traces, and the inputs and outputs of each component are connected by lookups. Since the scheduling component adds the inputs as positive values and the outputs as negative values, while the computing component adds the inputs as negative values and the outputs as positive values, the verifier can simply check that the sum of the two LogUp columns is zero.</p>
+<h2 id="code"><a class="header" href="#code">Code</a></h2>
+<pre><code class="language-rust ignore">fn main() {
+    // --snip--
+
+    // Create trace columns
+    let scheduling_trace = gen_scheduling_trace(log_size);
+    let computing_trace = gen_computing_trace(log_size, &amp;scheduling_trace[0], &amp;scheduling_trace[1]);
+
+    // Statement 0
+    let statement0 = ComponentsStatement0 { log_size };
+    statement0.mix_into(channel);
+
+    // Commit to the trace columns
+    let mut tree_builder = commitment_scheme.tree_builder();
+    tree_builder.extend_evals([scheduling_trace.clone(), computing_trace.clone()].concat());
+    tree_builder.commit(channel);
+
+    // Draw random elements to use when creating the random linear combination of lookup values in the LogUp columns
+    let lookup_elements = ComputationLookupElements::draw(channel);
+
+    // Create LogUp columns
+    let (scheduling_logup_cols, scheduling_claimed_sum) = gen_scheduling_logup_trace(
+        log_size,
+        &amp;scheduling_trace[0],
+        &amp;scheduling_trace[1],
+        &amp;lookup_elements,
+    );
+    let (computing_logup_cols, computing_claimed_sum) = gen_computing_logup_trace(
+        log_size,
+        &amp;computing_trace[0],
+        &amp;computing_trace[2],
+        &amp;lookup_elements,
+    );
+
+    // Statement 1
+    let statement1 = ComponentsStatement1 {
+        scheduling_claimed_sum,
+        computing_claimed_sum,
+    };
+    statement1.mix_into(channel);
+
+    // Commit to the LogUp columns
+    let mut tree_builder = commitment_scheme.tree_builder();
+    tree_builder.extend_evals([scheduling_logup_cols, computing_logup_cols].concat());
+    tree_builder.commit(channel);
+
+    let components = Components::new(&amp;statement0, &amp;lookup_elements, &amp;statement1);
+
+    let stark_proof = prove(&amp;components.component_provers(), channel, commitment_scheme).unwrap();
+
+    let proof = ComponentsProof {
+        statement0,
+        statement1,
+        stark_proof,
+    };
+
+    // --snip--
+}</code></pre>
+<p>The code above for proving the components should look pretty familiar by now. Since we need to do everything twice the amount of times, we create structs like <code>ComponentsStatement0</code>, <code>ComponentsStatement1</code>, <code>Components</code> and <code>ComponentsProof</code>, but the main logic is the same.</p>
+<p>Let's take a closer look at how the LogUp columns are generated.</p>
+<pre><code class="language-rust ignore">fn gen_scheduling_logup_trace(
+    log_size: u32,
+    scheduling_col_1: &amp;CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt;,
+    scheduling_col_2: &amp;CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt;,
+    lookup_elements: &amp;ComputationLookupElements,
+) -&gt; (
+    Vec&lt;CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt;&gt;,
+    SecureField,
+) {
+        // --snip--
+
+        let scheduling_input: PackedSecureField =
+            lookup_elements.combine(&amp;[scheduling_col_1.data[row]]);
+        let scheduling_output: PackedSecureField =
+            lookup_elements.combine(&amp;[scheduling_col_2.data[row]]);
+        col_gen.write_frac(
+            row,
+            scheduling_output - scheduling_input,
+            scheduling_input * scheduling_output,
+        );
+
+        // --snip--
+
+
+fn gen_computing_logup_trace(
+    log_size: u32,
+    computing_col_1: &amp;CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt;,
+    computing_col_3: &amp;CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt;,
+    lookup_elements: &amp;ComputationLookupElements,
+) -&gt; (
+    Vec&lt;CircleEvaluation&lt;SimdBackend, M31, BitReversedOrder&gt;&gt;,
+    SecureField,
+) {
+        // --snip--
+
+        let computing_input: PackedSecureField =
+            lookup_elements.combine(&amp;[computing_col_1.data[row]]);
+        let computing_output: PackedSecureField =
+            lookup_elements.combine(&amp;[computing_col_3.data[row]]);
+        col_gen.write_frac(
+            row,
+            computing_input - computing_output,
+            computing_input * computing_output,
+        );
+
+        // --snip--
+}</code></pre>
+<p>As you can see, the LogUp values of the input and output columns of both the scheduling and computing components are batched together, but in the scheduling component, the output LogUp value is subtracted from the input LogUp value, while in the computing component, the input LogUp value is subtracted from the output LogUp value. This means that when the LogUp sums from both components are added together, they should cancel out and equal zero.</p>
+<p>Next, let's check how the constraints are created.</p>
+<pre><code class="language-rust ignore">impl FrameworkEval for SchedulingEval {
+    // --snip--
+
+    fn evaluate&lt;E: EvalAtRow&gt;(&amp;self, mut eval: E) -&gt; E {
+        let input_col = eval.next_trace_mask();
+        let output_col = eval.next_trace_mask();
+
+        eval.add_to_relation(RelationEntry::new(
+            &amp;self.lookup_elements,
+            E::EF::one(),
+            &amp;[input_col],
+        ));
+
+        eval.add_to_relation(RelationEntry::new(
+            &amp;self.lookup_elements,
+            -E::EF::one(),
+            &amp;[output_col],
+        ));
+
+        eval.finalize_logup_in_pairs();
+
+        eval
+    }
+}
+
+impl FrameworkEval for ComputingEval {
+    // --snip--
+
+    fn evaluate&lt;E: EvalAtRow&gt;(&amp;self, mut eval: E) -&gt; E {
+        let input_col = eval.next_trace_mask();
+        let intermediate_col = eval.next_trace_mask();
+        let output_col = eval.next_trace_mask();
+
+        eval.add_constraint(
+            intermediate_col.clone() - input_col.clone() * input_col.clone() * input_col.clone(),
+        );
+        eval.add_constraint(
+            output_col.clone()
+                - intermediate_col.clone() * input_col.clone() * input_col.clone()
+                - E::F::one(),
+        );
+
+        eval.add_to_relation(RelationEntry::new(
+            &amp;self.lookup_elements,
+            -E::EF::one(),
+            &amp;[input_col],
+        ));
+
+        eval.add_to_relation(RelationEntry::new(
+            &amp;self.lookup_elements,
+            E::EF::one(),
+            &amp;[output_col],
+        ));
+
+        eval.finalize_logup_in_pairs();
+
+        eval
+    }
+}</code></pre>
+<p>As you can see, we define the LogUp constraints for each component, and we also add two constraints that make sure the computations \(x^3\) and \(x^5 + 1\) are correct.</p>
+<pre><code class="language-rust ignore">fn main() {
+    // --snip--
+
+    // Verify claimed sums
+    assert_eq!(
+        scheduling_claimed_sum + computing_claimed_sum,
+        SecureField::zero()
+    );
+
+    // Unpack proof
+    let statement0 = proof.statement0;
+    let statement1 = proof.statement1;
+    let stark_proof = proof.stark_proof;
+
+    // Create channel and commitment scheme
+    let channel = &amp;mut Blake2sChannel::default();
+    let commitment_scheme = &amp;mut CommitmentSchemeVerifier::&lt;Blake2sMerkleChannel&gt;::new(config);
+    let log_sizes = statement0.log_sizes();
+
+    // Preprocessed columns.
+    commitment_scheme.commit(stark_proof.commitments[0], &amp;log_sizes[0], channel);
+
+    // Commit to statement 0
+    statement0.mix_into(channel);
+
+    // Trace columns.
+    commitment_scheme.commit(stark_proof.commitments[1], &amp;log_sizes[1], channel);
+
+    // Draw lookup element.
+    let lookup_elements = ComputationLookupElements::draw(channel);
+
+    // Commit to statement 1
+    statement1.mix_into(channel);
+
+    // Interaction columns.
+    commitment_scheme.commit(stark_proof.commitments[2], &amp;log_sizes[2], channel);
+
+    // Create components
+    let components = Components::new(&amp;statement0, &amp;lookup_elements, &amp;statement1);
+
+    verify(
+        &amp;components.components(),
+        channel,
+        commitment_scheme,
+        stark_proof,
+    )
+    .unwrap();</code></pre>
+<p>Finally, we verify the components!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../air-development/local-row-constraints/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../air-development/additional-examples/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../air-development/local-row-constraints/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../air-development/additional-examples/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
